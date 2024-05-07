@@ -32,7 +32,6 @@ def read_mnist(images_path: str, labels_path: str):
 
 # %% read data
 
-
 train = {}
 test = {}
 
@@ -47,6 +46,8 @@ train['features'], train['labels'] = read_mnist(
     'datasets/emnist-letters-train-images-idx3-ubyte.gz',
     'datasets/emnist-letters-train-labels-idx1-ubyte.gz'
 )
+
+labels_letters_map = {i: chr(65 + i-1) for i in range(1, 27)}
 
 test['features'], test['labels'] = read_mnist(
     'datasets/emnist-letters-test-images-idx3-ubyte.gz',
@@ -67,13 +68,25 @@ for index, i in enumerate(test['features']):
 
 def display_image(position):
     image = train['features'][position].squeeze()
-    plt.title('Example %d. Label: %d' % (position, train['labels'][position]))
+    plt.figure()
+    index = position
+    label = train['labels'][position]
+    char = labels_letters_map[label]
+
+    plt.title(f'Example {index}. Label: {label} -> {char}')
     plt.imshow(image, cmap=plt.cm.gray_r)
+    plt.show()
 
 
 # %% display
 
 display_image(1000)
+
+
+# %% display i images
+
+for i in range(1, 100):
+    display_image(i)
 
 # TODO: fix labels mapping they are mapped by .txt file
 
