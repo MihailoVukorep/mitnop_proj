@@ -1,4 +1,8 @@
+# %% libs
+
 import cv2
+
+# %% read camera
 
 cv2.namedWindow("preview")
 vc = cv2.VideoCapture(0)
@@ -17,3 +21,4 @@ while rval:
 
 cv2.destroyWindow("preview")
 vc.release()
+# %%
