@@ -15,7 +15,6 @@ while True:
         img = cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 3)
     cv2.imshow("gottcha", frame)
     key = cv2.waitKey(1)
-    
     if key == ord('q'):
         break
 
