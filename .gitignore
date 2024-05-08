@@ -1,2 +1,4 @@
 p3env/
 dev/datasets/
+dev/__pycache__/
+dev/examples/__pycache__/
