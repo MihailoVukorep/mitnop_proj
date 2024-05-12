@@ -7,13 +7,13 @@ from dataset import *
 
 # %% print all dataset info 
 
-#dataset_info()
+dataset_info()
 
 # %% 
 print("loading dataset...")
 
 dataset = {}
-dataset['images'], dataset['labels'], mapping = dataset_load("balanced", "train")
+dataset['images'], dataset['labels'], mapping = dataset_load("digits", "train")
 
 print("loaded set.")
 print()
@@ -23,13 +23,20 @@ print('labels:', dataset['labels'].shape)
 print('class:', len(mapping))
 print()
 
-def setimg(index):
+def img(index):
     dataset_img(dataset['images'], dataset["labels"], index)
 
 # %% show images
 
-for i in range(1, 10):
-    setimg(i)
+for i in range(20, 30):
+    img(i)
+
+# %%
+a = dataset['images'][0]
+b = a.squeeze()
+print()
+
+img(0)
 
 # %% pixel sum enumerate
 
