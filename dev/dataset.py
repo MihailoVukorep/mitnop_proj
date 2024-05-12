@@ -11,6 +11,7 @@ def read_emnist(images_path: str, labels_path: str, mapping_path: str):
         length = len(labels)
         # Load flat 28x28 px images (784 px), and convert them to 28x28 px
         images = np.frombuffer(imagesFile.read(), dtype=np.uint8, offset=16).reshape(length, 784).reshape(length, 28, 28, 1)
+        images = images.transpose((0, 2, 1, 3)) 
 
     # convert labels to actual mapping
     mapping = {}

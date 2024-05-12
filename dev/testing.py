@@ -3,6 +3,7 @@ import os
 import gzip
 import numpy as np
 import pandas as pd
+import time
 from dataset import *
 
 # %% print all dataset info 
@@ -13,7 +14,7 @@ dataset_info()
 print("loading dataset...")
 
 dataset = {}
-dataset['images'], dataset['labels'], mapping = dataset_load("digits", "train")
+dataset['images'], dataset['labels'], mapping = dataset_load("bymerge", "train")
 
 print("loaded set.")
 print()
@@ -23,13 +24,16 @@ print('labels:', dataset['labels'].shape)
 print('class:', len(mapping))
 print()
 
+# %% img func
+
 def img(index):
     dataset_img(dataset['images'], dataset["labels"], index)
 
 # %% show images
 
-for i in range(20, 30):
+for i in range(dataset['images'].shape[0]):
     img(i)
+    time.sleep(0.5)
 
 # %%
 a = dataset['images'][0]
@@ -37,6 +41,20 @@ b = a.squeeze()
 print()
 
 img(0)
+
+# %% DRAW GRID
+
+G = 16  # Define the grid size
+grid = dataset['images'][:G*G]  # Extract images for the grid, adjust indexing as needed
+
+# Plot the grid of images
+fig, axes = plt.subplots(G, G, figsize=(8, 8))
+for i, ax in enumerate(axes.flat):
+    #ax.imshow(grid[i].reshape((28, 28)), cmap='gray')
+    ax.imshow(grid[i].reshape((28, 28)), cmap=plt.cm.gray_r)
+    ax.axis('off')
+
+plt.show()
 
 # %% pixel sum enumerate
 
