@@ -42,12 +42,54 @@ def dataset_img(images, labels, index):
     plt.imshow(images[index].squeeze(), cmap=plt.cm.gray_r)
     plt.show()
 
-def dataset_load(set_name, set_type):
+def dataset_loadset(set_name, set_type):
     dataset_dir = "datasets/gzip/"
     path_images  = os.path.join(dataset_dir, f"emnist-{set_name}-{set_type}-images-idx3-ubyte.gz")
     path_labels  = os.path.join(dataset_dir, f"emnist-{set_name}-{set_type}-labels-idx1-ubyte.gz")
     path_mapping = os.path.join(dataset_dir, f"emnist-{set_name}-mapping.txt")
     return read_emnist(path_images, path_labels, path_mapping)
+
+
+def dataset_load_all():
+    return dataset_load(["train", "test"])
+
+def dataset_load_train():
+    return dataset_load(["train"])
+
+def dataset_load_test():
+    return dataset_load(["test"])
+
+def dataset_load(types: list):
+    names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
+    total_images = []
+    total_labels = []
+    total_mappings = {}
+    for set_type in types:
+        for set_name in names:
+            images, labels, mapping = dataset_loadset(set_name, set_type)
+            print(f'{set_type} {set_name} images: {images.shape}')
+            print(f'{set_type} {set_name} labels: {labels.shape}')
+            print(f'{set_type} {set_name} class: {len(mapping)}')
+            total_images.append(images)
+            total_labels.append(labels)
+            total_mappings.update(mapping)
+
+    total_images_nparr = None
+    for arr in total_images:
+        if total_images_nparr is None:
+            total_images_nparr = arr
+        else:
+            total_images_nparr = np.concatenate([total_images_nparr, arr], axis=0)
+    
+    total_labels_nparr = None
+    for arr in total_labels:
+        if total_labels_nparr is None:
+            total_labels_nparr = arr
+        else:
+            total_labels_nparr = np.concatenate([total_labels_nparr, arr], axis=0)
+
+    return total_images_nparr, total_labels_nparr, total_mappings
+            
 
 def dataset_info():
     names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
@@ -57,7 +99,7 @@ def dataset_info():
         for set_name in names:
             print(f"{set_name}-{set_type}:")
             dataset = {}
-            dataset['images'], dataset['labels'], mapping = dataset_load(set_name, set_type)
+            dataset['images'], dataset['labels'], mapping = dataset_loadset(set_name, set_type)
             print('images:', dataset['images'].shape)
             print('labels:', dataset['labels'].shape)
             print('class:', len(mapping))
