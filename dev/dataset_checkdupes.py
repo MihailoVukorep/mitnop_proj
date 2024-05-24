@@ -34,23 +34,42 @@ print("hashes calculated")
 # %% find dupes
 
 def find_duplicates(lst):
+    seen = set()
+    duplicates = set()
+    for item in lst:
+        if item in seen:
+            duplicates.add(item)
+        else:
+            seen.add(item)
+    return duplicates
+
+def find_duplicates_xy(lst):
     seen = {}
+    dupe_x_y = list()
     duplicates = set()
     for i, item in enumerate(lst):
         if item in seen:
             duplicates.add(item)
-            print(f"Duplicate found at indices {seen[item]}, {i}")
+            dupe_x_y.append((seen[item], i))
+            #print(f"Duplicate found at indices {seen[item]}, {i}")
         else:
             seen[item] = i
-    return duplicates
+    return duplicates, dupe_x_y
 
-duplicates = find_duplicates(hashes)
+#duplicates = find_duplicates(hashes)
+duplicates, xy = find_duplicates_xy(hashes)
 
 print(len(duplicates))
 
-# %%
+# %% show dupes
 
-dataset_img(images, labels, 32371)
-dataset_img(images, labels, 113009)
+for x, y in xy:
+    dataset_img2(images, labels, x, y)
+    time.sleep(1)
+
+
+# %% show dupe by indexes
+
+dataset_img2(images, labels, 32371, 113009)
 
 # %%

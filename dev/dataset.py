@@ -40,6 +40,36 @@ def dataset_img(images, labels, index):
     plt.figure()
     plt.title(f'Example {index}. Label: {labels[index]}')
     plt.imshow(images[index].squeeze(), cmap=plt.cm.gray_r)
+    plt.axis('off')
+    plt.show()
+
+def dataset_img2(images, labels, index, index2):
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(5, 5))
+    ax1.set_title(f'Example {index}. Label: {labels[index]}')
+    ax1.imshow(images[index].squeeze(), cmap=plt.cm.gray_r)
+    ax1.axis('off')
+    ax2.set_title(f'Example {index2}. Label: {labels[index2]}')
+    ax2.imshow(images[index2].squeeze(), cmap=plt.cm.gray_r)
+    ax2.axis('off')
+    plt.tight_layout()
+    plt.show()
+
+def plot_dfs(total_df, train_df, test_df):
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 15))
+    ax1.set_title("character count (sorted by count descending)")
+    ax1.bar(total_df['character'], total_df['count'], color="blue", label="total")
+    ax1.bar(train_df['character'], train_df['count'], color="green", label="train")
+    ax1.bar(test_df['character'], test_df['count'], color="red", label="test")
+    ax1.legend()
+    total_df2 = total_df.sort_values(by='character', ascending=True)
+    train_df2 = train_df.sort_values(by='character', ascending=True)
+    test_df2 = test_df.sort_values(by='character', ascending=True)
+    ax2.set_title("character count (sorted by character ascending)")
+    ax2.bar(total_df2['character'], total_df2['count'], color="blue", label="total")
+    ax2.bar(train_df2['character'], train_df2['count'], color="green", label="train")
+    ax2.bar(test_df2['character'], test_df2['count'], color="red", label="test")
+    ax2.legend()
+    plt.savefig("character_count.png")
     plt.show()
 
 def dataset_loadset(set_name, set_type):
