@@ -70,6 +70,6 @@ for x, y in xy:
 
 # %% show dupe by indexes
 
-dataset_img2(images, labels, 32371, 113009)
+dataset_img2(images, labels, 32371, 0)
 
 # %%

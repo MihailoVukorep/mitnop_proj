@@ -72,7 +72,7 @@ total_counter = train_counter + test_counter
 total_df = save_counter(total_counter, f"dataset_count")
 
 
-# %% plot both
+# %% plot counts
 
 def plot_dfs(total_df, train_df, test_df):
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 15))
@@ -91,7 +91,7 @@ def plot_dfs(total_df, train_df, test_df):
     ax2.legend()
     plt.savefig("character_count.png")
     plt.show()
-    
+
 plot_dfs(total_df, train_df, test_df)
 
 # %%

@@ -35,7 +35,6 @@ def read_emnist(images_path: str, labels_path: str, mapping_path: str):
     images = read_emnist_images(images_path, len(labels))
     return images, labels, mapping
 
-
 def dataset_img(images, labels, index):
     plt.figure()
     plt.title(f'Example {index}. Label: {labels[index]}')
@@ -54,22 +53,13 @@ def dataset_img2(images, labels, index, index2):
     plt.tight_layout()
     plt.show()
 
-def plot_dfs(total_df, train_df, test_df):
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 15))
-    ax1.set_title("character count (sorted by count descending)")
-    ax1.bar(total_df['character'], total_df['count'], color="blue", label="total")
-    ax1.bar(train_df['character'], train_df['count'], color="green", label="train")
-    ax1.bar(test_df['character'], test_df['count'], color="red", label="test")
-    ax1.legend()
-    total_df2 = total_df.sort_values(by='character', ascending=True)
-    train_df2 = train_df.sort_values(by='character', ascending=True)
-    test_df2 = test_df.sort_values(by='character', ascending=True)
-    ax2.set_title("character count (sorted by character ascending)")
-    ax2.bar(total_df2['character'], total_df2['count'], color="blue", label="total")
-    ax2.bar(train_df2['character'], train_df2['count'], color="green", label="train")
-    ax2.bar(test_df2['character'], test_df2['count'], color="red", label="test")
-    ax2.legend()
-    plt.savefig("character_count.png")
+def dataset_grid(images, grid_size):
+    grid = images[:grid_size*grid_size]
+    fig, axes = plt.subplots(grid_size, grid_size, figsize=(8, 8))
+    for i, ax in enumerate(axes.flat):
+        #ax.imshow(grid[i].reshape((28, 28)), cmap='gray')
+        ax.imshow(grid[i].reshape((28, 28)), cmap=plt.cm.gray_r)
+        ax.axis('off')
     plt.show()
 
 def dataset_loadset(set_name, set_type):
@@ -78,7 +68,6 @@ def dataset_loadset(set_name, set_type):
     path_labels  = os.path.join(dataset_dir, f"emnist-{set_name}-{set_type}-labels-idx1-ubyte.gz")
     path_mapping = os.path.join(dataset_dir, f"emnist-{set_name}-mapping.txt")
     return read_emnist(path_images, path_labels, path_mapping)
-
 
 def dataset_load_all():
     return dataset_load(["train", "test"])
