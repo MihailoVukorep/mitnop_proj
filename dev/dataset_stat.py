@@ -44,14 +44,14 @@ def counter_plot(df, title):
     plt.figure(figsize=(15,5))
     fulltitle1 = f"{title} -- character count (sorted by count descending)"
     plt.title(fulltitle1)
-    plt.scatter(df['character'], df['count'])
+    plt.bar(df['character'], df['count'])
     plt.savefig(fulltitle1 + ".png")
     plt.show()
     df2 = df.sort_values(by='character', ascending=True)
     plt.figure(figsize=(15,5))
     fulltitle2 = f"{title} -- character count (sorted by character ascending)"
     plt.title(fulltitle2)
-    plt.scatter(df2['character'], df2['count'])
+    plt.bar(df2['character'], df2['count'])
     plt.savefig(fulltitle2 + ".png")
     plt.show()
 
