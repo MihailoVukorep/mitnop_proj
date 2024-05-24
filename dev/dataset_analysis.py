@@ -38,14 +38,10 @@ def save_counter(counter, filename):
     df.reset_index(drop=True, inplace=True)
     df.index.name = 'index'
     df.to_csv(filename + ".txt")
-
     with open(filename + "_stat.txt", 'w') as file:
         file.write("sum     " + str(df['count'].sum()) + "\n")
         file.write(str(df['count'].describe()) + "\n")
-
     return df
-
-
 
 def save_mappings(mappings, filename):
     with open(filename, 'w') as file:
