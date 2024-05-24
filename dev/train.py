@@ -75,4 +75,25 @@ plt.show()
 
 
 
+# %% testing model
+
+predicted_labels = np.argmax(model.predict(val_input, verbose=2), axis=1)
+actual_labels = np.argmax(val_target, axis=1)
+
+i = 0
+for a, b in zip(predicted_labels, actual_labels):
+    if a != b:
+        print(f'{i} predict: {a} -- actual: {b}')
+    i += 1
+
+
+# %% individual images
+
+index = 18
+image = val_input[index:index+1]
+
+plt.figure()
+plt.imshow(image[0])
+plt.show()
+
 # %%
