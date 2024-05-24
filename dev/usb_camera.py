@@ -19,3 +19,5 @@ while rval:
 
 cv2.destroyWindow("preview")
 vc.release()
+
+# %%
