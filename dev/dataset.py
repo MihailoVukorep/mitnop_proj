@@ -25,20 +25,14 @@ def read_emnist_mapping(mapping_path: str):
 
 def read_emnist_labels_mapped(labels_path: str, mapping_path: str):
     labels = read_emnist_labels(labels_path)
-
     # convert labels to actual mapping
     mapping = read_emnist_mapping(mapping_path)
     labels = np.array([mapping[element] for element in labels])
     return labels, mapping
 
 def read_emnist(images_path: str, labels_path: str, mapping_path: str):
-    labels = read_emnist_labels(labels_path)
+    labels, mapping = read_emnist_labels_mapped(labels_path, mapping_path)
     images = read_emnist_images(images_path, len(labels))
-
-    # convert labels to actual mapping
-    mapping = read_emnist_mapping(mapping_path)
-    labels = np.array([mapping[element] for element in labels])
-
     return images, labels, mapping
 
 
