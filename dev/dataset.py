@@ -5,6 +5,7 @@ import os
 import numpy as np
 import gzip
 import matplotlib.pyplot as plt
+from sys import getsizeof
 
 def read_emnist_labels(labels_path: str):
     with gzip.open(labels_path, 'rb') as labelsFile:
@@ -37,6 +38,14 @@ def read_emnist(images_path: str, labels_path: str, mapping_path: str):
     labels, mapping = read_emnist_labels_mapped(labels_path, mapping_path)
     images = read_emnist_images(images_path, len(labels))
     return images, labels, mapping
+
+def bytes_human_readable(num, suffix="B"):
+    original = num
+    for unit in ("", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"):
+        if abs(num) < 1024.0:
+            return f"{num:3.1f} {unit}{suffix} ({original} bytes)"
+        num /= 1024.0
+    return f"{num:.1f} Yi{suffix} ({original}) bytes"
 
 def dataset_img(images, labels, index, note: str = ""):
     plt.figure()
@@ -92,9 +101,10 @@ def dataset_load(types: list):
     for set_type in types:
         for set_name in names:
             images, labels, mapping = dataset_loadset(set_name, set_type)
-            print(f'{set_type} {set_name} images: {images.shape}')
-            print(f'{set_type} {set_name} labels: {labels.shape}')
-            print(f'{set_type} {set_name} class: {len(mapping)}')
+            print(f'{set_type} {set_name} images.: {images.shape}')
+            print(f'{set_type} {set_name} labels.: {labels.shape}')
+            print(f'{set_type} {set_name} class..: {len(mapping)}')
+            print(f'{set_type} {set_name} bytes..: {bytes_human_readable(images.nbytes)}')
             total_images.append(images)
             total_labels.append(labels)
             total_mappings.update(mapping)
@@ -114,7 +124,8 @@ def dataset_load(types: list):
             total_labels_nparr = np.concatenate([total_labels_nparr, arr], axis=0)
 
     return total_images_nparr, total_labels_nparr, total_mappings
-            
+
+
 
 def dataset_info():
     names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
@@ -123,10 +134,10 @@ def dataset_info():
     for set_type in types:
         for set_name in names:
             print(f"{set_name}-{set_type}:")
-            dataset = {}
-            dataset['images'], dataset['labels'], mapping = dataset_loadset(set_name, set_type)
-            print('images:', dataset['images'].shape)
-            print('labels:', dataset['labels'].shape)
-            print('class:', len(mapping))
+            images, labels, mapping = dataset_loadset(set_name, set_type)
+            print(f'images.: {images.shape}')
+            print(f'labels.: {labels.shape}')
+            print(f'class..: {len(mapping)}')
+            print(f"bytes..: {bytes_human_readable(images.nbytes)}")
             print()
 

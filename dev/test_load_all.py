@@ -10,6 +10,7 @@ import cv2 as cv
 import random as rand
 import math
 import matplotlib.pyplot as plt
+from sys import getsizeof
 
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dropout, Dense
@@ -117,9 +118,15 @@ def test_on(test_images, test_labels, test_mapping):
 
 print("testing on all test datasets at once...")
 
-
 images, labels, mapping = dataset_load_test()
 
-print("\n\nall-sets: ")
+print()
+print(f'test images..: {images.shape}')
+print(f'test labels..: {labels.shape}')
+print(f'test mapping.: {len(mapping)}')
+print(f"test bytes...: {bytes_human_readable(images.nbytes)}")
+print()
+print()
+print("all-sets: ")
 test_on(images, labels, mapping)
 # %%
