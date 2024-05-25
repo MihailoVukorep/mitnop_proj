@@ -106,7 +106,9 @@ test_images, test_labels, test_mapping = dataset_load_test()
 
 # %% rm dupes
 
+print("removing duplicates...")
 test_images, test_labels = dupes_rm(test_images, test_labels)
+print("duplicates removed")
 
 # %% set info
 
