@@ -32,18 +32,17 @@ def counter_to_df(counter, filename):
         file.write(str(df['count'].describe()) + "\n")
     return df
 
-def counter_stat(set_type):
-    labels, mappings = dataset_load_all_labels([set_type]) 
+def counter_stat(load_func, set_type):
+    images, labels, mapping = load_func()
     counter = labels_to_counter(labels)
-    df = counter_to_df(counter, f"dataset_count_{set_type}")
+    df = counter_to_df(counter, f"dataset_unqiue_count_{set_type}")
     return counter, df
 
 # %% get counters
 
-train_counter, train_df = counter_stat("train")
-test_counter, test_df = counter_stat("test")
-total_counter = train_counter + test_counter
-total_df = save_counter(total_counter, f"dataset_count")
+train_counter, train_df = counter_stat(dataset_load_train, "train")
+test_counter, test_df = counter_stat(dataset_load_test, "test")
+total_counter, total_df = counter_stat(dataset_load_all, "all")
 
 
 # %% plot counts
@@ -63,85 +62,9 @@ def plot_dfs(total_df, train_df, test_df):
     ax2.bar(train_df2['character'], train_df2['count'], color="green", label="train")
     ax2.bar(test_df2['character'], test_df2['count'], color="red", label="test")
     ax2.legend()
-    plt.savefig("dataset_count.png")
+    plt.savefig("dataset_unqiue_count_all.png")
     plt.show()
 
 plot_dfs(total_df, train_df, test_df)
-
-# %% set stat
-
-
-def get_setcounts(types: list):
-    names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
-    setcounts = []
-    for set_type in types:
-        for set_name in names:
-            labels, mapping = dataset_loadlabels(set_name, set_type)
-            setcounts.append((set_name, set_type, labels.shape[0]))
-    return setcounts
-
-def setcounts_to_df(data, filename):
-    df = pd.DataFrame(data, columns=['set_name', 'set_type', 'count'])
-    df.sort_values(by='count', inplace=True, ascending=False)
-    df.reset_index(drop=True, inplace=True)
-    df.index.name = 'index'
-    df.to_csv(filename + ".txt")
-    with open(filename + "_stat.txt", 'w') as file:
-        file.write("sum     " + str(df['count'].sum()) + "\n")
-        file.write(str(df['count'].describe()) + "\n")
-    return df
-
-def plot_setcounts(countsets):
-    categories = list(set([item[0] for item in countsets]))
-    data_types = list(set([item[1] for item in countsets]))
-    counts = {category: {data_type: 0 for data_type in data_types} for category in categories}
-    for category, data_type, count in countsets:
-        counts[category][data_type] = count
-    fig, ax = plt.subplots(figsize=(10, 6))
-    bar_width = 0.35
-    index = range(len(categories))
-    bar1 = [counts[category]['train'] for category in categories]
-    bar2 = [counts[category]['test'] for category in categories]
-    bars_train = ax.bar(index, bar1, bar_width, label='Train')
-    bars_test = ax.bar([i + bar_width for i in index], bar2, bar_width, label='Test')
-    ax.set_xlabel('Sets')
-    ax.set_ylabel('Count')
-    ax.set_title('Counts by setname')
-    ax.set_xticks([i + bar_width / 2 for i in index])
-    ax.set_xticklabels(categories)
-    ax.legend()
-    plt.show()
-
-def plot_setcounts2(countsets):
-    categories = list(set([item[0] for item in countsets]))
-    data_types = list(set([item[1] for item in countsets]))
-    counts = {category: {data_type: 0 for data_type in data_types} for category in categories}
-    for category, data_type, count in countsets:
-        counts[category][data_type] = count
-    index = range(len(categories))
-    bar1 = [counts[category]['train'] for category in categories]
-    bar2 = [counts[category]['test'] for category in categories]
-    plt.bar(index, bar1, label='Train')
-    plt.bar(index, bar2, label='Test')
-    plt.xlabel('Sets')
-    plt.xlabel('Count')
-    plt.title('Counts by setname')
-    plt.xticks(range(len(categories)), categories)
-    plt.legend()
-    plt.savefig("dataset_countbyset")
-    plt.show()
-
-# %% get set counts
-
-setcounts = get_setcounts(["train", "test"])
-
-# %% df
-df = setcounts_to_df(setcounts, "dataset_countbyset")
-
-
-# %% plot them
-print(setcounts)
-plot_setcounts2(setcounts)
-
 
 # %%

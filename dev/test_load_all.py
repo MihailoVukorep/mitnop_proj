@@ -95,20 +95,11 @@ model = load_model(model_path)
 model.summary()
 print("loaded model.")
 
-# %% funcs
-
 
 # %% testing...
 
-print("testing on all test datasets at once...")
-
+print("loading test datasets...")
 test_images, test_labels, test_mapping = dataset_load_test()
-
-# %% rm dupes
-
-print("removing duplicates...")
-test_images, test_labels = dupes_rm(test_images, test_labels)
-print("duplicates removed")
 
 # %% set info
 

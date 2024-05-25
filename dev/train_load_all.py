@@ -25,23 +25,16 @@ from dataset import *
 
 print("loading datasets...")
 
-train_images, train_labels, train_mapping = dataset_load_train()
-train_mapping_n = len(train_mapping)
-
-# %% rm dupes
-print("removing duplicates...")
-train_images, train_labels = dupes_rm(train_images, train_labels)
-print("duplicates removed.")
+images, labels, mapping = dataset_load_all()
+mapping_n = len(mapping)
 
 # %%  dataset info
 
-print("\n\n\n")
-
 print("using datasets:")
-print(f'train images..: {train_images.shape}')
-print(f'train labels..: {train_labels.shape}')
-print(f'train mapping.: {train_mapping_n}')
-print(f'train bytes...: {bytes_human_readable(train_images.nbytes)}')
+print(f'train images..: {images.shape}')
+print(f'train labels..: {labels.shape}')
+print(f'train mapping.: {mapping_n}')
+print(f'train bytes...: {bytes_human_readable(images.nbytes)}')
 print()
 
 # %% preprocess set for tf
@@ -114,14 +107,14 @@ class_mapping = {
 }
 class_mapping_n = len(class_mapping)
 
-train_target_labels = np.array([class_mapping[i] for i in train_labels])
-del train_labels
+train_target_labels = np.array([class_mapping[i] for i in labels])
+del labels
 gc.collect()
 train_target = to_categorical(train_target_labels, class_mapping_n)
 del train_target_labels
 gc.collect()
-train_input = train_images / 255
-del train_images
+train_input = images / 255
+del images
 gc.collect()
 
 print("images prepared.")
@@ -142,8 +135,8 @@ model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["categ
 model.summary()
 
 # %% training model params
-num_epochs = 3
-batch_size = 100
+num_epochs = 4
+batch_size = 1
 
 # %% train model
 
@@ -154,7 +147,7 @@ print("model trained.")
 # %% save model
 
 print("saving model...")
-model.save('model.keras')
+model.save('model_all.keras')
 print("model saved.")
 
 # %%
