@@ -22,6 +22,8 @@ from dataset import *
 #train_images, train_labels, train_mapping = dataset_loadset("digits", "train")
 #test_images, test_labels, test_mapping = dataset_loadset("digits", "test")
 
+print("loading datasets...")
+
 train_images, train_labels, train_mapping = dataset_load_train()
 test_images, test_labels, test_mapping = dataset_load_test()
 
@@ -30,15 +32,18 @@ test_mapping_n = len(test_mapping)
 
 print("\n\n\n")
 
+print("loaded datasets:")
 print(f'train images: {train_images.shape}')
 print(f'train labels: {train_labels.shape}')
 print(f'train mapping: {train_mapping_n}')
-
 print(f'test images: {test_images.shape}')
 print(f'test labels: {test_labels.shape}')
 print(f'test mapping: {test_mapping_n}')
+print()
 
-# %% make mapping for tensorflow
+# %% preprocess set for tf
+
+print("preparing images for tensorflow...")
 
 class_mapping = {
     '0': 0,
@@ -108,15 +113,17 @@ class_mapping = {
 train_target_labels = np.array([class_mapping[i] for i in train_labels])
 test_target_labels = np.array([class_mapping[i] for i in test_labels])
 
-
-# %% preprocess set
 train_input = train_images / 255
 train_target = to_categorical(train_target_labels, train_mapping_n)
 
 val_input = test_images / 255
 val_target = to_categorical(test_target_labels, test_mapping_n)
 
+print("images prepared.")
+
 # %% create model
+
+print("creating model:")
 model = Sequential()
 model.add(Input(shape=(28, 28, 1)))
 model.add(Conv2D(filters=16, kernel_size=(5,5), strides=(2,2), padding="valid", activation="relu", use_bias=True))
