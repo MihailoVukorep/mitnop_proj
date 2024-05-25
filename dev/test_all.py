@@ -10,12 +10,14 @@ import cv2 as cv
 import random as rand
 import math
 import matplotlib.pyplot as plt
-from tensorflow.keras.models import Sequential
+
+from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dropout, Dense
 from tensorflow.keras.utils import to_categorical
+
 from dataset import *
 
-# %% model
+# %% load data for testing
 
 class_mapping = {
     '0': 0,
@@ -83,55 +85,45 @@ class_mapping = {
 }
 class_mapping_n = len(class_mapping)
 
-print("creating model:")
-model = Sequential()
-model.add(Input(shape=(28, 28, 1)))
-model.add(Conv2D(filters=16, kernel_size=(5,5), strides=(2,2), padding="valid", activation="relu", use_bias=True))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Conv2D(filters=8, kernel_size=(3,3), strides=(1,1), padding="valid", activation="relu", use_bias=True))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Flatten())
-model.add(Dropout(0.5))
-model.add(Dense(class_mapping_n, activation="softmax"))
-model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["categorical_accuracy"])
+# %% load model
+
+model_path = "model.keras"
+print(f"loading model: {model_path}")
+model = load_model(model_path)
 model.summary()
+print("loaded model.")
 
 # %% funcs
 
-def train_on(train_images, train_labels, train_mapping): 
+def test_on(test_images, test_labels, test_mapping): 
     print("loaded datasets:")
-    print(f'train images: {train_images.shape}')
-    print(f'train labels: {train_labels.shape}')
-    print(f'train mapping: {len(train_mapping)}')
+    print(f'test images: {test_images.shape}')
+    print(f'test labels: {test_labels.shape}')
+    print(f'test mapping: {len(test_mapping)}')
     print()
     print("preparing images for tensorflow...")
 
-    train_target_labels = np.array([class_mapping[i] for i in train_labels])
-    train_input = train_images / 255
-    train_target = to_categorical(train_target_labels, class_mapping_n)
+    test_target_labels = np.array([class_mapping[i] for i in test_labels])
+    test_input = test_images / 255
+    test_target = to_categorical(test_target_labels, class_mapping_n)
 
     print("images prepared.")
 
     num_epochs = 3
     batch_size = 100
 
-    print("training model...")
-    cnn_results = model.fit(train_input, train_target, batch_size=batch_size, epochs=num_epochs, verbose=2)
-    print("model trained.")
+    print("EVALUATE: ")
+    results = model.evaluate(val_input, val_target, verbose=2)
 
 
-# %% training
+# %% testing...
 
-print("training on train datasets...")
+print("testing on test datasets...")
 
 names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
 print("printing info for all sets...")
 for set_name in names:
     print(f"{set_name}-train:")
     images, labels, mapping = dataset_loadset(set_name, "train")
-    train_on(images, labels, mapping)
+    test_on(images, labels, mapping)
 
-# %% save model
-print("saving model...")
-model.save('model.keras')  # Save as HDF5 file
-print("model saved.")
