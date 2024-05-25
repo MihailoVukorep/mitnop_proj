@@ -28,8 +28,8 @@ model = create_model()
 
 # %% training basic model
 
-num_epochs = 5
-batch_size = 64
+num_epochs = 2
+batch_size = 1
 
 print("training model...")
 history = model.fit(
