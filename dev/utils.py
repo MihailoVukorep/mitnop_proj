@@ -298,6 +298,23 @@ def dupes_rm(images, labels):
     
 
 def dataset_load(types: list):
+
+    # check cache first
+    s = '-'.join(types)
+    cache_images_path = d_datasets(f"cache_{s}_images.npy")
+    cache_labels_path = d_datasets(f"cache_{s}_labels.npy")
+    cache_mapping_path = d_datasets(f"cache_{s}_mapping.npy")
+    if os.path.exists(cache_images_path) and os.path.exists(cache_labels_path) and os.path.exists(cache_mapping_path):
+        images = np.load(cache_images_path)
+        labels = np.load(cache_labels_path)
+        mapping_arr = np.load(cache_mapping_path)
+        mapping = set(mapping_arr)
+        print(f'loaded from cache images.: {images.shape}')
+        print(f'loaded from cache labels.: {labels.shape}')
+        print(f'loaded from cache class..: {len(mapping)}')
+        print(f'loaded from cache bytes..: {bytes_human_readable(images.nbytes)}')
+        return images, labels, mapping
+
     names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
     total_images = []
     total_labels = []
@@ -339,6 +356,13 @@ def dataset_load(types: list):
     print(f'unique images.: {total_images_nparr.shape}')
     print(f'unique bytes..: {bytes_human_readable(total_images_nparr.nbytes)}')
 
+    # cache
+    print("creating cache...")
+    np.save(cache_images_path, total_images_nparr)
+    np.save(cache_labels_path, total_labels_nparr)
+    np.save(cache_mapping_path, np.array(list(total_mappings)))
+    print("cache created")
+
     return total_images_nparr, total_labels_nparr, total_mappings
 
 def dataset_info():
@@ -374,13 +398,7 @@ def create_model():
 
 def prepdata(images, labels):
     target_labels = np.array([class_mapping[i] for i in labels])
-    del labels
-    gc.collect()
     data_target = to_categorical(target_labels, class_mapping_n)
-    del target_labels
-    gc.collect()
     data_input = images / 255
-    del images
-    gc.collect()
     return data_input, data_target
 
