@@ -96,34 +96,32 @@ print("loaded model.")
 # %% funcs
 
 def test_on(test_images, test_labels, test_mapping): 
-    print("loaded datasets:")
-    print(f'test images: {test_images.shape}')
-    print(f'test labels: {test_labels.shape}')
-    print(f'test mapping: {len(test_mapping)}')
-    print()
-    print("preparing images for tensorflow...")
-
+    #print("loaded datasets:")
+    #print(f'test images: {test_images.shape}')
+    #print(f'test labels: {test_labels.shape}')
+    #print(f'test mapping: {len(test_mapping)}')
+    #print()
+    #print("preparing images for tensorflow...")
     test_target_labels = np.array([class_mapping[i] for i in test_labels])
     test_input = test_images / 255
     test_target = to_categorical(test_target_labels, class_mapping_n)
-
-    print("images prepared.")
-
+    #print("images prepared.")
     num_epochs = 3
     batch_size = 100
-
-    print("EVALUATE: ")
-    results = model.evaluate(val_input, val_target, verbose=2)
+    #print("EVALUATE: ")
+    results = model.evaluate(test_input, test_target, verbose=0)
+    print(f"categorical_accuracy: {results[1]} - loss: {results[0]}")
 
 
 # %% testing...
 
-print("testing on test datasets...")
+print("testing on all test datasets...")
 
 names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
-print("printing info for all sets...")
 for set_name in names:
-    print(f"{set_name}-train:")
-    images, labels, mapping = dataset_loadset(set_name, "train")
+    print(f"{set_name}-test: ", end="")
+    images, labels, mapping = dataset_loadset(set_name, "test")
     test_on(images, labels, mapping)
 
+
+# %%

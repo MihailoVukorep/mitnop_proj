@@ -122,10 +122,9 @@ def train_on(train_images, train_labels, train_mapping):
 
 # %% training
 
-print("training on train datasets...")
+print("training on all train datasets...")
 
 names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
-print("printing info for all sets...")
 for set_name in names:
     print(f"{set_name}-train:")
     images, labels, mapping = dataset_loadset(set_name, "train")
