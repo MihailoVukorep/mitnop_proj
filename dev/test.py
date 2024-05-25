@@ -17,20 +17,10 @@ from tensorflow.keras.utils import to_categorical
 
 from dataset import *
 
-# %% load model
-# Load the model from file
-model = load_model('model.keras')
-model.summary()
-
-
-# %% val data for testing
+# %% load data for testing
 
 test_images, test_labels, test_mapping = dataset_loadset("digits", "test")
-
 test_mapping_n = len(test_mapping)
-
-
-# %% 
 
 class_mapping = {
     '0': 0,
@@ -104,20 +94,46 @@ test_target_labels = np.array([class_mapping[i] for i in test_labels])
 val_input = test_images / 255
 val_target = to_categorical(test_target_labels, test_mapping_n)
 
+
+# %% load model
+
+model_path = "model.keras"
+
+print(f"loading model: {model_path}")
+model = load_model(model_path)
+model.summary()
+print("loaded model.")
+
+# %% eval model
+
+print("EVALUATE: ")
+results = model.evaluate(val_input, val_target, verbose=2)
+
+
 # %% testing model
 
 print("predicting...")
 predicted_labels = np.argmax(model.predict(val_input, verbose=2), axis=1)
 print("done.")
 
+
 # %% find misses
 
 i = -1
+right = 0
+wrong = 0
 for a, b in zip(predicted_labels, test_labels):
     i += 1
     if str(a) != str(b):
         print(f'{i} predict: {a} -- actual: {b}')
+        wrong += 1
+    else:
+        right += 1
 
+l = val_input.shape[0]
+f = wrong/l
+print(f"wrong predictions: {wrong}/{l} -- {wrong/l}")
+print(f"right predictions: {right}/{l} -- {right/l}")
 
 # %% individual images
 

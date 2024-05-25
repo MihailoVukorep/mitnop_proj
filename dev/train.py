@@ -129,17 +129,19 @@ model.summary()
 # %% training model params
 
 num_epochs = 3
-batch_size = 1000
+batch_size = 100
 
 # %% train model
 
 print("training model...")
 cnn_results = model.fit(train_input, train_target, validation_data=(val_input, val_target), batch_size=batch_size, epochs=num_epochs, verbose=2)
+print("model trained.")
 
 # %% save model
 
+print("saving model...")
 model.save('model.keras')  # Save as HDF5 file
-
+print("model saved.")
 
 # %% plotting history
 # plt.figure(figsize=(8, 6))
