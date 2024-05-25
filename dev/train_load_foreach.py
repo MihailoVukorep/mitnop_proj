@@ -24,7 +24,7 @@ for i, set_name in enumerate(names):
     print(f'| train bytes...: {bytes_human_readable(train_images.nbytes)}')
 
     # prep data
-    train_input, train_target = prepdata(images, labels)
+    train_input, train_target = prepdata(train_images, train_labels)
 
     # train
     num_epochs = epochs[i]
@@ -35,5 +35,5 @@ for i, set_name in enumerate(names):
 
 # %% save model
 print("saving model...")
-model.save('model.keras')  # Save as HDF5 file
+model.save(d_models('model_foreach.keras'))  # Save as HDF5 file
 print("model saved.")

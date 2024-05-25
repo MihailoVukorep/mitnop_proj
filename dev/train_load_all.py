@@ -10,10 +10,10 @@ mapping_n = len(mapping)
 
 # %% dataset info
 print("using datasets:")
-print(f'train images..: {images.shape}')
-print(f'train labels..: {labels.shape}')
-print(f'train mapping.: {mapping_n}')
-print(f'train bytes...: {bytes_human_readable(images.nbytes)}')
+print(f'images..: {images.shape}')
+print(f'labels..: {labels.shape}')
+print(f'mapping.: {mapping_n}')
+print(f'bytes...: {bytes_human_readable(images.nbytes)}')
 print()
 
 # %% preprocess set for tf
@@ -37,6 +37,6 @@ print("model trained.")
 
 # %% save model
 print("saving model...")
-model.save('model_all.keras')
+model.save(d_models('model_all.keras'))
 print("model saved.")
 
