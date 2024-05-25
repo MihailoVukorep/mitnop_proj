@@ -77,6 +77,33 @@ def dataset_grid(images, grid_size):
         ax.axis('off')
     plt.show()
 
+def dataset_loadlabels(set_name, set_type):
+    dataset_dir = "datasets/gzip/"
+    path_labels  = os.path.join(dataset_dir, f"emnist-{set_name}-{set_type}-labels-idx1-ubyte.gz")
+    path_mapping = os.path.join(dataset_dir, f"emnist-{set_name}-mapping.txt")
+    return read_emnist_labels_mapped(path_labels, path_mapping)
+
+def dataset_load_all_labels(types: list):
+    names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
+    total_labels = []
+    total_mappings = {}
+    for set_type in types:
+        for set_name in names:
+            labels, mapping = dataset_loadlabels(set_name, set_type)
+            total_labels.append(labels)
+            total_mappings.update(mapping)
+
+    total_labels_nparr = None
+    for arr in total_labels:
+        if total_labels_nparr is None:
+            total_labels_nparr = arr
+        else:
+            total_labels_nparr = np.concatenate([total_labels_nparr, arr], axis=0)
+
+    return total_labels_nparr, total_mappings
+
+
+
 def dataset_loadset(set_name, set_type):
     dataset_dir = "datasets/gzip/"
     path_images  = os.path.join(dataset_dir, f"emnist-{set_name}-{set_type}-images-idx3-ubyte.gz")
@@ -92,6 +119,7 @@ def dataset_load_train():
 
 def dataset_load_test():
     return dataset_load(["test"])
+
 
 def dataset_load(types: list):
     names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
