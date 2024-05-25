@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 # %% libs
 import os
 import gzip
