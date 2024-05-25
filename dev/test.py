@@ -135,7 +135,7 @@ f = wrong/l
 print(f"wrong predictions: {wrong}/{l} -- {wrong/l}")
 print(f"right predictions: {right}/{l} -- {right/l}")
 
-# %% individual images
+# %% see some misses
 
 i = -1
 for a, b in zip(predicted_labels, test_labels):
@@ -144,4 +144,16 @@ for a, b in zip(predicted_labels, test_labels):
         print(f'{i} predict: {a} -- actual: {b}')
         dataset_img(val_input, test_labels, i, note=f"predict: {a}")
         time.sleep(5)
+
+
+# %% see correct
+
+i = -1
+for a, b in zip(predicted_labels, test_labels):
+    i += 1
+    if str(a) == str(b):
+        print(f'{i} predict: {a} -- actual: {b}')
+        dataset_img(val_input, test_labels, i, note=f"predict: {a}")
+        time.sleep(1)
+
 # %%

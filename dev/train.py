@@ -19,8 +19,11 @@ from dataset import *
 
 # %% load set
 
-train_images, train_labels, train_mapping = dataset_loadset("digits", "train")
-test_images, test_labels, test_mapping = dataset_loadset("digits", "test")
+#train_images, train_labels, train_mapping = dataset_loadset("digits", "train")
+#test_images, test_labels, test_mapping = dataset_loadset("digits", "test")
+
+train_images, train_labels, train_mapping = dataset_load_train()
+test_images, test_labels, test_mapping = dataset_load_test()
 
 train_mapping_n = len(train_mapping)
 test_mapping_n = len(test_mapping)
