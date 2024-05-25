@@ -17,7 +17,7 @@ from tensorflow.keras.utils import to_categorical
 
 from dataset import *
 
-# %% load data for testing
+# %% map classes
 
 class_mapping = {
     '0': 0,
@@ -115,13 +115,11 @@ def test_on(test_images, test_labels, test_mapping):
 
 # %% testing...
 
-print("testing on all test datasets...")
-
-names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
-for set_name in names:
-    print(f"{set_name}-test: ", end="")
-    images, labels, mapping = dataset_loadset(set_name, "test")
-    test_on(images, labels, mapping)
+print("testing on all test datasets at once...")
 
 
+images, labels, mapping = dataset_load_test()
+
+print("\n\nall-sets: ")
+test_on(images, labels, mapping)
 # %%
