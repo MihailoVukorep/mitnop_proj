@@ -19,8 +19,8 @@ from dataset import *
 
 # %% load set
 
-train_images, train_labels, train_mapping = dataset_load_train()
-test_images, test_labels, test_mapping = dataset_load_test()
+train_images, train_labels, train_mapping = dataset_loadset("digits", "train")
+test_images, test_labels, test_mapping = dataset_loadset("digits", "test")
 
 train_mapping_n = len(train_mapping)
 test_mapping_n = len(test_mapping)
@@ -103,7 +103,7 @@ class_mapping = {
 }
 
 train_target_labels = np.array([class_mapping[i] for i in train_labels])
-test_target_labels = np.array([class_mapping[i] for i in train_labels])
+test_target_labels = np.array([class_mapping[i] for i in test_labels])
 
 
 # %% preprocess set
@@ -129,46 +129,29 @@ model.summary()
 # %% training model params
 
 num_epochs = 3
-batch_size = 1
+batch_size = 1000
 
 # %% train model
 
+print("training model...")
 cnn_results = model.fit(train_input, train_target, validation_data=(val_input, val_target), batch_size=batch_size, epochs=num_epochs, verbose=2)
 
+# %% save model
+
+model.save('model.keras')  # Save as HDF5 file
+
+
 # %% plotting history
+# plt.figure(figsize=(8, 6))
+# plt.plot(range(1, num_epochs + 1), cnn_results.history["loss"], "o--", label="Training")
+# plt.plot(range(1, num_epochs + 1), cnn_results.history["val_loss"], "o--", label="Validation")
+# plt.ylim(0)
+# plt.title("Performance of the neural network")
+# plt.xticks(range(1, num_epochs + 1))
+# plt.xlabel("Epoch")
+# plt.ylabel("Loss")
+# plt.legend(title="Phase")
+# plt.show()
 
-plt.figure(figsize=(8, 6))
-plt.plot(range(1, num_epochs + 1), cnn_results.history["loss"], "o--", label="Training")
-plt.plot(range(1, num_epochs + 1), cnn_results.history["val_loss"], "o--", label="Validation")
-plt.ylim(0)
-plt.title("Performance of the neural network")
-plt.xticks(range(1, num_epochs + 1))
-plt.xlabel("Epoch")
-plt.ylabel("Loss")
-plt.legend(title="Phase")
-plt.show()
-
-
-
-# %% testing model
-
-predicted_labels = np.argmax(model.predict(val_input, verbose=2), axis=1)
-actual_labels = np.argmax(val_target, axis=1)
-
-i = 0
-for a, b in zip(predicted_labels, actual_labels):
-    if a != b:
-        print(f'{i} predict: {a} -- actual: {b}')
-    i += 1
-
-
-# %% individual images
-
-index = 18
-image = val_input[index:index+1]
-
-plt.figure()
-plt.imshow(image[0])
-plt.show()
 
 # %%

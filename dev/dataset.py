@@ -38,9 +38,12 @@ def read_emnist(images_path: str, labels_path: str, mapping_path: str):
     images = read_emnist_images(images_path, len(labels))
     return images, labels, mapping
 
-def dataset_img(images, labels, index):
+def dataset_img(images, labels, index, note: str = ""):
     plt.figure()
-    plt.title(f'Example {index}. Label: {labels[index]}')
+    fullnote = ""
+    if note:
+        fullnote = f" -- {note}"
+    plt.title(f'Example {index}. Label: {labels[index]}{fullnote}')
     plt.imshow(images[index].squeeze(), cmap=plt.cm.gray_r)
     plt.axis('off')
     plt.show()
