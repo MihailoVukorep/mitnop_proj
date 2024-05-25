@@ -12,67 +12,35 @@ import hashlib
 import matplotlib.pyplot as plt
 from dataset import *
 
+# %% check dupes all
+
+dupes_check_all()
+
 # %% load set
+def unique(images, labels, mapping):
+    print(f'images.: {images.shape}')
+    print(f'labels.: {labels.shape}')
+    print(f'class..: {len(mapping)}')
+    print(f"bytes..: {bytes_human_readable(images.nbytes)}")
 
+    print("removing duplicates...")
+    images, labels = dupes_rm(images, labels)
+    print("dupes removed.")
+
+    print("unique images:")
+    print(f'images.: {images.shape}')
+    print(f"bytes..: {bytes_human_readable(images.nbytes)}")
+
+# %% unique all
 images, labels, mapping = dataset_load_all()
+unique(images, labels, mapping)
 
-# %% set info
-print(images.shape)
-print(labels.shape)
-print(len(mapping))
+# %% unique test
+images, labels, mapping = dataset_load_train()
+unique(images, labels, mapping)
 
-
-# %% calc hashes
-
-print("calculating hashes for all images...")
-
-hashes = []
-for image in images:
-    arr_bytes = image.tobytes()
-    md5_hash = hashlib.md5(arr_bytes).hexdigest()
-    hashes.append(md5_hash)
-
-print("hashes calculated")
-
-# %% find dupes
-
-def find_duplicates(lst):
-    seen = set()
-    duplicates = set()
-    for item in lst:
-        if item in seen:
-            duplicates.add(item)
-        else:
-            seen.add(item)
-    return duplicates
-
-def find_duplicates_xy(lst):
-    seen = {}
-    dupe_x_y = list()
-    duplicates = set()
-    for i, item in enumerate(lst):
-        if item in seen:
-            duplicates.add(item)
-            dupe_x_y.append((seen[item], i))
-            #print(f"Duplicate found at indices {seen[item]}, {i}")
-        else:
-            seen[item] = i
-    return duplicates, dupe_x_y
-
-#duplicates = find_duplicates(hashes)
-duplicates, xy = find_duplicates_xy(hashes)
-
-print(len(duplicates))
-
-# %% show dupes
-
-for x, y in xy:
-    dataset_img2(images, labels, x, y)
-    time.sleep(1)
-
-
-# %% show dupe by indexes
-
-dataset_img2(images, labels, 32371, 0)
+# %% unique test
+images, labels, mapping = dataset_load_test()
+unique(images, labels, mapping)
 
 # %%

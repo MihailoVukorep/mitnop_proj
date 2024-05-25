@@ -104,6 +104,12 @@ print("testing on all test datasets at once...")
 
 test_images, test_labels, test_mapping = dataset_load_test()
 
+# %% rm dupes
+
+test_images, test_labels = dupes_rm(test_images, test_labels)
+
+# %% set info
+
 print()
 print(f'test images..: {test_images.shape}')
 print(f'test labels..: {test_labels.shape}')
@@ -111,6 +117,8 @@ print(f'test mapping.: {len(test_mapping)}')
 print(f"test bytes...: {bytes_human_readable(test_images.nbytes)}")
 print()
 print("all-sets: ")
+
+# %% prep data
 
 test_target_labels = np.array([class_mapping[i] for i in test_labels])
 del test_labels
@@ -122,4 +130,8 @@ test_input = test_images / 255
 del test_images
 gc.collect()
 
+# %% eval
+
 results = model.evaluate(test_input, test_target, verbose=2)
+
+# %%

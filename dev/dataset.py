@@ -5,6 +5,7 @@ import os
 import numpy as np
 import gzip
 import matplotlib.pyplot as plt
+import hashlib
 from sys import getsizeof
 
 def read_emnist_labels(labels_path: str):
@@ -169,3 +170,54 @@ def dataset_info():
             print(f"bytes..: {bytes_human_readable(images.nbytes)}")
             print()
 
+def images_to_md5s(images):
+    hashes = []
+    for image in images:
+        arr_bytes = image.tobytes()
+        md5_hash = hashlib.md5(arr_bytes).hexdigest()
+        hashes.append(md5_hash)
+    return hashes
+
+def find_duplicates(lst):
+    seen = {}
+    dupe_x_y = list()
+    duplicates = set()
+    duplicates_i = set()
+    for i, item in enumerate(lst):
+        if item in seen:
+            duplicates.add(item)
+            duplicates_i.add(i)
+            dupe_x_y.append((seen[item], i))
+        else:
+            seen[item] = i
+    return duplicates_i, dupe_x_y
+
+
+def dupes_check(images):
+    hashes = images_to_md5s(images)
+    return find_duplicates(hashes)
+
+def dupes_check_all():
+    names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
+    types = ["train", "test"]
+    print("printing info for all sets...")
+    for set_type in types:
+        for set_name in names:
+            print(f"{set_name}-{set_type}:")
+            images, labels, mapping = dataset_loadset(set_name, set_type)
+            print(f'images.: {images.shape}')
+            print(f'labels.: {labels.shape}')
+            print(f'class..: {len(mapping)}')
+            print(f"bytes..: {bytes_human_readable(images.nbytes)}")
+            
+            duplicates_i, dupe_x_y = dupes_check(images) 
+            print(f"dupes..: {len(duplicates_i)}")
+            for i in dupe_x_y: dataset_img2(images, labels, i[0], i[1])
+
+def dupes_rm(images, labels):
+    duplicates_i, _ = dupes_check(images) 
+    l = list(duplicates_i)
+    images = np.delete(images, l, axis=0)
+    labels = np.delete(labels, l, axis=0)
+    return images, labels
+    

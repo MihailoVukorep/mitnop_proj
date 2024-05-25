@@ -26,23 +26,22 @@ from dataset import *
 print("loading datasets...")
 
 train_images, train_labels, train_mapping = dataset_load_train()
-#test_images, test_labels, test_mapping = dataset_load_test()
-
 train_mapping_n = len(train_mapping)
-#test_mapping_n = len(test_mapping)
+
+# %% rm dupes
+print("removing duplicates...")
+train_images, train_labels = dupes_rm(train_images, train_labels)
+print("duplicates removed.")
+
+# %%  dataset info
 
 print("\n\n\n")
 
-print("loaded datasets:")
+print("using datasets:")
 print(f'train images..: {train_images.shape}')
 print(f'train labels..: {train_labels.shape}')
 print(f'train mapping.: {train_mapping_n}')
 print(f'train bytes...: {bytes_human_readable(train_images.nbytes)}')
-print()
-#print(f'test images...: {test_images.shape}')
-#print(f'test labels...: {test_labels.shape}')
-#print(f'test mapping..: {test_mapping_n}')
-#print(f'test bytes....: {bytes_human_readable(test_images.nbytes)}')
 print()
 
 # %% preprocess set for tf
@@ -125,16 +124,6 @@ train_input = train_images / 255
 del train_images
 gc.collect()
 
-# test_target_labels = np.array([class_mapping[i] for i in test_labels])
-# del test_labels
-# gc.collect()
-# test_target = to_categorical(test_target_labels, class_mapping_n)
-# del test_target_labels
-# gc.collect()
-# test_input = test_images / 255
-# del test_images
-# gc.collect()
-
 print("images prepared.")
 
 # %% create model
@@ -153,19 +142,19 @@ model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["categ
 model.summary()
 
 # %% training model params
-
 num_epochs = 3
 batch_size = 100
 
 # %% train model
 
 print("training model...")
-#cnn_results = model.fit(train_input, train_target, validation_data=(val_input, val_target), batch_size=batch_size, epochs=num_epochs, verbose=2)
 cnn_results = model.fit(train_input, train_target, batch_size=batch_size, epochs=num_epochs, verbose=2)
 print("model trained.")
 
 # %% save model
 
 print("saving model...")
-model.save('model.keras')  # Save as HDF5 file
+model.save('model.keras')
 print("model saved.")
+
+# %%
