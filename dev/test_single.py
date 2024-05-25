@@ -11,7 +11,7 @@ test_input, test_target = prepdata(test_images, test_labels)
 
 # %% load model
 
-model_path = d_models("model.keras")
+model_path = d_models("model_all.keras")
 
 print(f"loading model: {model_path}")
 model = load_model(model_path)
@@ -54,5 +54,25 @@ for i, (a, b) in enumerate(zip(a_lst, test_labels)):
         print(f'{i} predict: {a} -- actual: {b}')
         dataset_img(test_images, test_labels, i, note=f"predict: {a}")
         time.sleep(5)
+
+# %% single image
+
+index = 30
+image = test_input[index:index+1]
+print(image.shape)
+val = np.argmax(model.predict(image), axis=1)
+value = val[0]
+
+label = reversed_class_mapping[value]
+print(label)
+
+# %% image
+plt.figure()
+print(image[0].shape)
+plt.imshow(image[0])
+plt.show()
+
+print(image)
+
 
 # %%
