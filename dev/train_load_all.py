@@ -25,6 +25,10 @@ print("images prepared.")
 # %% train val split
 
 train_input, test_input, train_target, test_target = train_test_split(images_tf, labels_tf, test_size=0.2, random_state=42)
+del images_tf
+gc.collect()
+del labels_tf
+gc.collect()
 
 # %% create model
 print("creating model:")
@@ -50,9 +54,6 @@ print("model trained.")
 print("saving model...")
 model.save(d_models('model_all.keras'))
 print("model saved.")
-
-
-
 
 # # %% training a super model
 # num_epochs = 50
