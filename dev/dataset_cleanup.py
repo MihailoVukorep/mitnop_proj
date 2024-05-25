@@ -6,7 +6,7 @@ from utils import *
 
 # %% check dupes all
 
-dupes_check_all()
+#dupes_check_all()
 
 # %% load set
 def unique(images, labels, mapping):
@@ -23,16 +23,13 @@ def unique(images, labels, mapping):
     print(f'images.: {images.shape}')
     print(f"bytes..: {bytes_human_readable(images.nbytes)}")
 
+    mapping_arr = np.array(list(mapping))
+    np.save('datasets/cleanset_all_images.npy', images)
+    np.save('datasets/cleanset_all_labels.npy', labels)
+    np.save('datasets/cleanset_all_mapping.npy', mapping_arr)
+
 # %% unique all
 images, labels, mapping = dataset_load_all()
 unique(images, labels, mapping)
 
-# %% unique test
-images, labels, mapping = dataset_load_train()
-unique(images, labels, mapping)
 
-# %% unique test
-images, labels, mapping = dataset_load_test()
-unique(images, labels, mapping)
-
-# %%

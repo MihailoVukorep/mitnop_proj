@@ -18,8 +18,8 @@ def counter_to_df(counter, filename):
     df.sort_values(by='count', inplace=True, ascending=False)
     df.reset_index(drop=True, inplace=True)
     df.index.name = 'index'
-    df.to_csv(filename + ".txt")
-    with open(filename + "_stat.txt", 'w') as file:
+    df.to_csv(d_datasets(filename + ".txt"))
+    with open(d_datasets(filename + "_stat.txt"), 'w') as file:
         file.write("sum     " + str(df['count'].sum()) + "\n")
         file.write(str(df['count'].describe()) + "\n")
     return df
@@ -54,7 +54,7 @@ def plot_dfs(total_df, train_df, test_df):
     ax2.bar(train_df2['character'], train_df2['count'], color="green", label="train")
     ax2.bar(test_df2['character'], test_df2['count'], color="red", label="test")
     ax2.legend()
-    plt.savefig("dataset_unqiue_count_all.png")
+    plt.savefig(d_datasets("dataset_unqiue_count_all.png"))
     plt.show()
 
 plot_dfs(total_df, train_df, test_df)

@@ -1,21 +1,95 @@
 #!/usr/bin/env python3
 
-import os
-import numpy as np
-import gzip
-import matplotlib.pyplot as plt
-import hashlib
-from sys import getsizeof
 import collections
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dropout, Dense
-from tensorflow.keras.utils import to_categorical
-import pandas as pd
-import time
 import cv2 as cv
-import random as rand
+import gzip
+import hashlib
 import math
-import gc
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import pandas as pd
+import random as rand
+import time
+from sys import getsizeof
+from tensorflow.keras.layers import Conv2D, Dense, Dropout, Flatten, Input, MaxPooling2D
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.utils import to_categorical
+
+class_mapping = {
+    '0': 0,
+    '1': 1,
+    '2': 2,
+    '3': 3,
+    '4': 4,
+    '5': 5,
+    '6': 6,
+    '7': 7,
+    '8': 8,
+    '9': 9,
+    'a': 10,
+    'b': 11,
+    'c': 12,
+    'd': 13,
+    'e': 14,
+    'f': 15,
+    'g': 16,
+    'h': 17,
+    'i': 18,
+    'j': 19,
+    'k': 20,
+    'l': 21,
+    'm': 22,
+    'n': 23,
+    'o': 24,
+    'p': 25,
+    'q': 26,
+    'r': 27,
+    's': 28,
+    't': 29,
+    'u': 30,
+    'v': 31,
+    'w': 32,
+    'x': 33,
+    'y': 34,
+    'z': 35,
+    'A': 36,
+    'B': 37,
+    'C': 38,
+    'D': 39,
+    'E': 40,
+    'F': 41,
+    'G': 42,
+    'H': 43,
+    'I': 44,
+    'J': 45,
+    'K': 46,
+    'L': 47,
+    'M': 48,
+    'N': 49,
+    'O': 50,
+    'P': 51,
+    'Q': 52,
+    'R': 53,
+    'S': 54,
+    'T': 55,
+    'U': 56,
+    'V': 57,
+    'W': 58,
+    'X': 59,
+    'Y': 60,
+    'Z': 61
+}
+class_mapping_n = len(class_mapping)
+
+datasets_dir = "datasets/"
+models_dir = "models/"
+
+def d_datasets(file_path):
+    return os.path.join(datasets_dir, file_path)
+
+def d_models(model_name):
+    return os.path.join(models_dir, model_name)
 
 def read_emnist_labels(labels_path: str):
     with gzip.open(labels_path, 'rb') as labelsFile:
@@ -214,71 +288,7 @@ def dataset_info():
             print(f"bytes..: {bytes_human_readable(images.nbytes)}")
             print()
 
-class_mapping = {
-    '0': 0,
-    '1': 1,
-    '2': 2,
-    '3': 3,
-    '4': 4,
-    '5': 5,
-    '6': 6,
-    '7': 7,
-    '8': 8,
-    '9': 9,
-    'a': 10,
-    'b': 11,
-    'c': 12,
-    'd': 13,
-    'e': 14,
-    'f': 15,
-    'g': 16,
-    'h': 17,
-    'i': 18,
-    'j': 19,
-    'k': 20,
-    'l': 21,
-    'm': 22,
-    'n': 23,
-    'o': 24,
-    'p': 25,
-    'q': 26,
-    'r': 27,
-    's': 28,
-    't': 29,
-    'u': 30,
-    'v': 31,
-    'w': 32,
-    'x': 33,
-    'y': 34,
-    'z': 35,
-    'A': 36,
-    'B': 37,
-    'C': 38,
-    'D': 39,
-    'E': 40,
-    'F': 41,
-    'G': 42,
-    'H': 43,
-    'I': 44,
-    'J': 45,
-    'K': 46,
-    'L': 47,
-    'M': 48,
-    'N': 49,
-    'O': 50,
-    'P': 51,
-    'Q': 52,
-    'R': 53,
-    'S': 54,
-    'T': 55,
-    'U': 56,
-    'V': 57,
-    'W': 58,
-    'X': 59,
-    'Y': 60,
-    'Z': 61
-}
-class_mapping_n = len(class_mapping)
+
 
 def create_model():
     model = Sequential()
