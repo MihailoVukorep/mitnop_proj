@@ -111,12 +111,9 @@ for set_name in names:
     del test_target_labels
     gc.collect()
     test_input = test_images / 255
-    del test_input
+    del test_images
     gc.collect()
 
-    num_epochs = 3
-    batch_size = 100
     results = model.evaluate(test_input, test_target, verbose=0)
     print(f"categorical_accuracy: {results[1]} - loss: {results[0]}")
 
-# %%
