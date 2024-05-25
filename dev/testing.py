@@ -12,8 +12,13 @@ from dataset import *
 
 images, labels, mapping = dataset_load_train()
 
-# %% info
-
-len(images)
-
-# %%
+# plt.figure(figsize=(8, 6))
+# plt.plot(range(1, num_epochs + 1), cnn_results.history["loss"], "o--", label="Training")
+# plt.plot(range(1, num_epochs + 1), cnn_results.history["val_loss"], "o--", label="Validation")
+# plt.ylim(0)
+# plt.title("Performance of the neural network")
+# plt.xticks(range(1, num_epochs + 1))
+# plt.xlabel("Epoch")
+# plt.ylabel("Loss")
+# plt.legend(title="Phase")
+# plt.show()
