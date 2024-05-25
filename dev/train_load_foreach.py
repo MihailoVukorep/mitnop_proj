@@ -9,6 +9,7 @@ import time
 import cv2 as cv
 import random as rand
 import math
+import gc
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dropout, Dense
@@ -96,30 +97,6 @@ model.add(Dense(class_mapping_n, activation="softmax"))
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["categorical_accuracy"])
 model.summary()
 
-# %% funcs
-
-def train_on(train_images, train_labels, train_mapping): 
-    print("loaded datasets:")
-    print(f'train images: {train_images.shape}')
-    print(f'train labels: {train_labels.shape}')
-    print(f'train mapping: {len(train_mapping)}')
-    print()
-    print("preparing images for tensorflow...")
-
-    train_target_labels = np.array([class_mapping[i] for i in train_labels])
-    train_input = train_images / 255
-    train_target = to_categorical(train_target_labels, class_mapping_n)
-
-    print("images prepared.")
-
-    num_epochs = 3
-    batch_size = 100
-
-    print("training model...")
-    cnn_results = model.fit(train_input, train_target, batch_size=batch_size, epochs=num_epochs, verbose=2)
-    print("model trained.")
-
-
 # %% training
 
 print("training on all train datasets...")
@@ -127,8 +104,30 @@ print("training on all train datasets...")
 names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
 for set_name in names:
     print(f"{set_name}-train:")
-    images, labels, mapping = dataset_loadset(set_name, "train")
-    train_on(images, labels, mapping)
+    train_images, train_labels, train_mapping = dataset_loadset(set_name, "train")
+
+    print(f'train images..: {train_images.shape}')
+    print(f'train labels..: {train_labels.shape}')
+    print(f'train mapping.: {len(train_mapping)}')
+    print(f'train bytes...: {bytes_human_readable(train_images.nbytes)}')
+
+    # prep data
+    train_target_labels = np.array([class_mapping[i] for i in train_labels])
+    del train_labels
+    gc.collect()
+    train_target = to_categorical(train_target_labels, class_mapping_n)
+    del train_target_labels
+    gc.collect()
+    train_input = train_images / 255
+    del train_images
+    gc.collect()
+
+    # train
+    num_epochs = 3
+    batch_size = 100
+    print("training model...")
+    cnn_results = model.fit(train_input, train_target, batch_size=batch_size, epochs=num_epochs, verbose=2)
+    print("model trained.")
 
 # %% save model
 print("saving model...")

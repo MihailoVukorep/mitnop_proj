@@ -11,6 +11,7 @@ import random as rand
 import math
 import matplotlib.pyplot as plt
 from sys import getsizeof
+import gc
 
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dropout, Dense
@@ -96,37 +97,29 @@ print("loaded model.")
 
 # %% funcs
 
-def test_on(test_images, test_labels, test_mapping): 
-    #print("loaded datasets:")
-    #print(f'test images: {test_images.shape}')
-    #print(f'test labels: {test_labels.shape}')
-    #print(f'test mapping: {len(test_mapping)}')
-    #print()
-    #print("preparing images for tensorflow...")
-    test_target_labels = np.array([class_mapping[i] for i in test_labels])
-    test_input = test_images / 255
-    test_target = to_categorical(test_target_labels, class_mapping_n)
-    #print("images prepared.")
-    num_epochs = 3
-    batch_size = 100
-    #print("EVALUATE: ")
-    results = model.evaluate(test_input, test_target, verbose=0)
-    print(f"categorical_accuracy: {results[1]} - loss: {results[0]}")
-
 
 # %% testing...
 
 print("testing on all test datasets at once...")
 
-images, labels, mapping = dataset_load_test()
+test_images, test_labels, test_mapping = dataset_load_test()
 
 print()
-print(f'test images..: {images.shape}')
-print(f'test labels..: {labels.shape}')
-print(f'test mapping.: {len(mapping)}')
-print(f"test bytes...: {bytes_human_readable(images.nbytes)}")
-print()
+print(f'test images..: {test_images.shape}')
+print(f'test labels..: {test_labels.shape}')
+print(f'test mapping.: {len(test_mapping)}')
+print(f"test bytes...: {bytes_human_readable(test_images.nbytes)}")
 print()
 print("all-sets: ")
-test_on(images, labels, mapping)
-# %%
+
+test_target_labels = np.array([class_mapping[i] for i in test_labels])
+del test_labels
+gc.collect()
+test_target = to_categorical(test_target_labels, class_mapping_n)
+del test_target_labels
+gc.collect()
+test_input = test_images / 255
+del test_images
+gc.collect()
+
+results = model.evaluate(test_input, test_target, verbose=2)

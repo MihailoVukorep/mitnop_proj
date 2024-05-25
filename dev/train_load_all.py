@@ -118,25 +118,21 @@ class_mapping_n = len(class_mapping)
 train_target_labels = np.array([class_mapping[i] for i in train_labels])
 del train_labels
 gc.collect()
-
-train_input = train_images / 255
-del train_images
-gc.collect()
-
 train_target = to_categorical(train_target_labels, class_mapping_n)
 del train_target_labels
+gc.collect()
+train_input = train_images / 255
+del train_images
 gc.collect()
 
 # test_target_labels = np.array([class_mapping[i] for i in test_labels])
 # del test_labels
 # gc.collect()
-
-# test_input = test_images / 255
-# del test_images
-# gc.collect()
-
 # test_target = to_categorical(test_target_labels, class_mapping_n)
 # del test_target_labels
+# gc.collect()
+# test_input = test_images / 255
+# del test_images
 # gc.collect()
 
 print("images prepared.")
