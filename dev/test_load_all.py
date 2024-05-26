@@ -6,7 +6,7 @@ from utils import *
 
 # %% load model
 
-model_path = d_models("model.keras")
+model_path = d_models("model_all.keras")
 print(f"loading model: {model_path}")
 model = load_model(model_path)
 model.summary()

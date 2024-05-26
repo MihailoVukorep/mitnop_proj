@@ -411,7 +411,7 @@ def create_model():
     model.add(Dropout(0.5))
     model.add(Dense(128, activation="relu"))
     model.add(Dense(class_mapping_n, activation="softmax"))
-    model.compile(loss="categorical_crossentropy", optimizer=Adam(), metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=Adam(), metrics=["categorical_accuracy"])
     model.summary()
     return model
 

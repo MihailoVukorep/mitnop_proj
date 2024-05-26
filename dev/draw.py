@@ -54,6 +54,8 @@ def receive_image():
     value = predicted_digit[0]
     label = reversed_class_mapping[value]
 
+
+
     # TODO: fix this
 
     print(label)
