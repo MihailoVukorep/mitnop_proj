@@ -12,23 +12,46 @@
             height: 100vh;
             margin: 0;
         }
-        #canvas-container {
-            text-align: center;
+        canvas { border: 1px solid black; }
+        pre {
+            width: 400px;
+            height: 90vh;
+            overflow: auto;
+            border: 1px solid #ccc;
+            font-family: monospace;
+            font-size: 20px;
         }
-        canvas {
-            border: 1px solid black;
+        .panel {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            border: 1px solid #ccc;
+        }
+        .panel-item {
+            flex: 1;
+            margin: 5px;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="canvas-container">
-        <canvas id="canvas" width="280" height="280"></canvas>
-        <br>
-        <button onclick="predictDigit()">Predict Digit</button>
-        <button onclick="clearCanvas()">Clear</button>
-        <br>
-        <p>Prediction: <span id="prediction"></span></p>
-        <canvas id="hiddenCanvas" width="28" height="28"></canvas>
+    <div class="panel">
+        <div class="panel-item">
+            <div id="canvas-container">
+                <canvas id="canvas" width="280" height="280"></canvas>
+                <div>
+                    <button onclick="predictDigit()">Predict Digit</button>
+                    <button onclick="clearCanvas()">Clear</button>
+                </div>
+                <canvas id="hiddenCanvas" width="28" height="28"></canvas>
+            </div>
+        </div>
+
+        <div class="panel-item">
+            <p>Prediction:</p>
+            <pre style="width: 200; height: 200;" id="prediction"></pre>
+        </div>
     </div>
 
     <script>
@@ -37,39 +60,25 @@
         const hiddenCanvas = document.getElementById('hiddenCanvas');
         const hiddenCtx = hiddenCanvas.getContext('2d');
         let isDrawing = false;
-        let lastX = 0;
-        let lastY = 0;
 
-        canvas.addEventListener('mousedown', (e) => {
-            isDrawing = true;
-            [lastX, lastY] = [e.offsetX, e.offsetY];
-        });
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; });
 
-        ctx.lineWidth = 10; // Adjust the value to make the brush thicker
+        ctx.lineWidth = 10; // brush size
 
         canvas.addEventListener('mousemove', (e) => {
-            if (!isDrawing) return;
+            if (!isDrawing) { return; }
+            if (e.button == 2) { return; }
+            var x = event.clientX - canvas.offsetLeft;
+            var y = event.clientY - canvas.offsetTop;
             ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
-            [lastX, lastY] = [e.offsetX, e.offsetY];
-
+            ctx.arc(x, y, 10, 0, 2 * Math.PI);
+            ctx.fill();
             predictDigit();
         });
 
-        canvas.addEventListener('mouseup', () => {
-            isDrawing = false;
-        });
-
-        canvas.addEventListener('mouseleave', () => {
-            isDrawing = false;
-        });
-
-        canvas.addEventListener('contextmenu', function(event) {
-            event.preventDefault(); // Prevent default right-click menu
-            clearCanvas();
-        });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; });
+        canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+        canvas.addEventListener('contextmenu', function(event) { event.preventDefault(); clearCanvas(); });
 
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -78,13 +87,8 @@
         }
 
         function predictDigit() {
-            // Downscale the drawn content to 28x28
             hiddenCtx.drawImage(canvas, 0, 0, hiddenCanvas.width, hiddenCanvas.height);
-
-            // Convert the hidden canvas to base64 data URL
             const imageData = hiddenCanvas.toDataURL();
-
-            // Send image data to the Flask server
             fetch('http://localhost:5000/endpoint', {
                 method: 'POST',
                 headers: {
