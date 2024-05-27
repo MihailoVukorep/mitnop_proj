@@ -22,16 +22,6 @@ df["prediction"] = "0%"
 app = Flask(__name__)
 CORS(app)
 
-import logging
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
-
-def secho(text, file=None, nl=None, err=None, color=None, **styles):
-    pass
-
-def echo(text, file=None, nl=None, err=None, color=None, **styles):
-    pass
-
 @app.route('/')
 def root():
     return redirect('/index')
@@ -59,6 +49,5 @@ def receive_image():
     return jsonify({'prediction': str(sorted_df.to_string())})
 
 if __name__ == '__main__':
-    print("open testing page: http://localhost:5000/index")
     app.run(host='0.0.0.0', port=5000)
 

@@ -81,10 +81,9 @@
             ctx.beginPath();
             ctx.arc(x, y, 10, 0, 2 * Math.PI);
             ctx.fill();
-            predictDigit();
         });
 
-        canvas.addEventListener('mouseup', () => { isDrawing = false; });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; predictDigit(); });
         canvas.addEventListener('mouseleave', () => { isDrawing = false; });
         canvas.addEventListener('contextmenu', function(event) { event.preventDefault(); clearCanvas(); });
 
