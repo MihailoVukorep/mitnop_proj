@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 # %% libs
-from utils import *
-
+from utils_main import *
+from utils_load import *
+from utils_tf import *
 
 # %% load model
 
@@ -35,5 +36,6 @@ test_input, test_target = prepdata(test_images, test_labels)
 # %% eval
 
 results = model.evaluate(test_input, test_target, verbose=2)
+
 
 # %%

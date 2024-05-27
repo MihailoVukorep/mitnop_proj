@@ -1,22 +1,40 @@
-# Neural Reader
+# Book Archiver - detecting hand written digits and letters from camera/photos
 
-### TODO:
-- ~~READING DATA~~
-- DATA PREPROCESSING - DATASET PERMUTAION - RANDOM EFFECTS (ROTATE, SHIFT, ...)
-- TRAINING CONVOLUTIONAL NEURAL NETWORK
-- SAVING CNN
-- LOADING CNN
-- ~~READING CAMERA~~
-- EXTRACTING FEATURES - EXTRACING INDIVIDUAL CHARACTERS
-- PIPING FEATURES TO CNN
+## Setting up the python virtual environment
+To set up the python virtual environment run the following command:
 
-### LINKS:
+```
+bash setup-env.sh
+```
 
-#### EXAMPLES
-- https://stackoverflow.com/questions/59535286/improve-real-life-results-of-neural-network-trained-with-mnist-dataset
-- https://www.youtube.com/watch?v=4okEbWM92oY
+the script will install all the needed libraries
+<br>
+use the environment with:
 
-#### DATASET
+```
+source p3env/bin/activate
+```
+
+## Download the EMNIST dataset
+run the following command to download the EMNIST dataset 
+```
+bash dldataset.sh
+```
+after the command finishes you should have the gzip.zip file in the datasets folder
+<br>
+the script will also extract the zip file
 - https://www.nist.gov/itl/products-and-services/emnist-dataset
 - https://biometrics.nist.gov/cs_links/EMNIST/Readme.txt
 - https://biometrics.nist.gov/cs_links/EMNIST/gzip.zip
+
+## Analyse the downloaded set
+```
+python dataset_analysis.py
+```
+![char count image](stats/dataset_unqiue_count_all.png "character count")
+
+## Training the convolutional neural network
+
+```
+python train_load_all.py
+```

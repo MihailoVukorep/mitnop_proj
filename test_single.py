@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
 # %% libs
-from utils import *
+from utils_main import *
+from utils_load import *
+from utils_tf import *
+
 
 # %% load data for testing
 
@@ -55,24 +58,20 @@ for i, (a, b) in enumerate(zip(a_lst, test_labels)):
         dataset_img(test_images, test_labels, i, note=f"predict: {a}")
         time.sleep(5)
 
-# %% single image
+# %% single image by index
 
-index = 30
+index = 400
 image = test_input[index:index+1]
 print(image.shape)
 val = np.argmax(model.predict(image), axis=1)
 value = val[0]
 
 label = reversed_class_mapping[value]
-print(label)
+print("predict:", label)
 
-# %% image
 plt.figure()
-print(image[0].shape)
 plt.imshow(image[0])
 plt.show()
-
-print(image)
 
 
 # %%
