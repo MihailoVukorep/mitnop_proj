@@ -15,11 +15,20 @@ else:
 while rval:
     cv2.imshow("preview", frame)
     rval, frame = vc.read()
+
     key = cv2.waitKey(20)
+
     if key == 27: # exit on ESC
+        print("Closing webcam preview.")
+        break
+    elif key == 32:
+        file_name = f"image.png"
+        cv2.imwrite(file_name, frame)
+        print(f"Image {file_name} created.")
+        print("Closing webcam preview.")
         break
 
-cv2.destroyWindow("preview")
 vc.release()
+cv2.destroyAllWindows()
 
 # %%
