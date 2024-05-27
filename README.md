@@ -4,7 +4,7 @@
 To set up the python virtual environment run the following command:
 
 ```
-bash setup-env.sh
+./setup-env.sh
 ```
 
 the script will also install all the required libraries inside the virtual environment
@@ -12,7 +12,7 @@ the script will also install all the required libraries inside the virtual envir
 ## Download the EMNIST dataset
 run the following command to download the EMNIST dataset 
 ```
-bash dldataset.sh
+./dldataset.sh
 ```
 after the command finishes you should have the gzip.zip file in the datasets folder
 <br>
