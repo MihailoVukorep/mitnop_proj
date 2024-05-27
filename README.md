@@ -45,4 +45,4 @@ this will run a flask server web page on
 http://localhost:5000/index
 that will allow you to draw characters and test the accuracy of the convolutional neural network
 
-![draw test image](images/draw.py.png "draw test")
+![draw test image](images/drawtest.png "draw test")

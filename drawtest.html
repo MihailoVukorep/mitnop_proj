@@ -99,21 +99,26 @@
             .catch(error => console.error('Error:', error));
         }
 
+        let iter = 0;
+
         canvas.addEventListener('mousemove', (e) => {
             if (!isDrawing) { return; }
-            if (e.button == 2) { return; }
             var x = event.clientX - canvas.offsetLeft;
             var y = event.clientY - canvas.offsetTop;
             ctx.beginPath();
             ctx.arc(x, y, zoomSlider.value, 0, 2 * Math.PI);
             ctx.fill();
             ctx2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height);
+
+            iter++;
+            if (iter % 10 == 0) { predictDigit(); }
         });
+
 
         canvas.addEventListener('mousedown', (e) => { isDrawing = true; });
         canvas.addEventListener('mouseup', () => { isDrawing = false; predictDigit(); });
         canvas.addEventListener('mouseleave', () => { isDrawing = false; });
-        canvas.addEventListener('contextmenu', function(event) { event.preventDefault(); clearCanvas(); });
+        canvas.addEventListener('contextmenu', function(event) { isDrawing = false; event.preventDefault(); clearCanvas(); });
     </script>
 </body>
 </html>
