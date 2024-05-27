@@ -8,12 +8,6 @@ bash setup-env.sh
 ```
 
 the script will also install all the required libraries inside the virtual environment
-<br>
-use the virtual environment with:
-
-```
-source p3env/bin/activate
-```
 
 ## Download the EMNIST dataset
 run the following command to download the EMNIST dataset 
