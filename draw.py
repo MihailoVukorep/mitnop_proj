@@ -10,19 +10,12 @@ from PIL import Image
 import numpy as np
 import pandas as pd
 
-def base64_to_numpy(base64_string):
-    image_data = base64.b64decode(base64_string)
-    image = Image.open(BytesIO(image_data))
-    image_array = np.array(image)
-    image_array = np.max(image_array, axis=2, keepdims=True)
-    image_array = np.expand_dims(image_array, axis=0)
-    return image_array
-
 model_path = d_models("model_all_bigbatch.keras")
 print(f"loading model: {model_path}")
 model = load_model(model_path)
 print("loaded model.")
 
+# make output dataframe
 df = pd.DataFrame(reversed_class_mapping.items(), columns=["key", "char"])
 df["prediction"] = "0%"
 
@@ -50,9 +43,13 @@ def index():
 @app.route('/endpoint', methods=['POST'])
 def receive_image():
     data_url = request.json.get('image')
-    base64 = data_url.split("data:image/png;base64,")[1]
-    image = base64_to_numpy(base64)
-    predictions = model.predict(image, verbose=0)
+    base64_string = data_url.split("data:image/png;base64,")[1]
+    image_data = base64.b64decode(base64_string)
+    image = Image.open(BytesIO(image_data))
+    image_array = np.array(image)
+    image_array = np.max(image_array, axis=2, keepdims=True)
+    image_array = np.expand_dims(image_array, axis=0)
+    predictions = model.predict(image_array, verbose=0)
     value = np.argmax(predictions, axis=1)
     value_id = value[0]
     label = reversed_class_mapping[value_id]

@@ -20,6 +20,8 @@
             border: 1px solid #ccc;
             font-family: monospace;
             font-size: 20px;
+            margin: 0;
+            padding: 0;
         }
         .panel {
             display: flex;
@@ -32,6 +34,12 @@
             flex: 1;
             margin: 5px;
             margin: 10px;
+        }
+        p {
+            margin: 0;
+        }
+        #hiddenCanvas {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -50,7 +58,7 @@
 
         <div class="panel-item">
             <p>Prediction:</p>
-            <pre style="width: 200; height: 200;" id="prediction"></pre>
+            <pre id="prediction"></pre>
         </div>
     </div>
 

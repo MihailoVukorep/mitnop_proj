@@ -9,7 +9,7 @@ bash setup-env.sh
 
 the script will install all the needed libraries
 <br>
-use the environment with:
+use the virtual environment with:
 
 ```
 source p3env/bin/activate
@@ -23,6 +23,8 @@ bash dldataset.sh
 after the command finishes you should have the gzip.zip file in the datasets folder
 <br>
 the script will also extract the zip file
+<br>
+if the script fails consider downloading the set manually:
 - https://www.nist.gov/itl/products-and-services/emnist-dataset
 - https://biometrics.nist.gov/cs_links/EMNIST/Readme.txt
 - https://biometrics.nist.gov/cs_links/EMNIST/gzip.zip
@@ -38,3 +40,15 @@ python dataset_analysis.py
 ```
 python train_load_all.py
 ```
+
+## Testing the convolutional neural network
+
+Test the trained network with
+```
+python draw.py
+```
+this will run a flask server web page on 
+http://localhost:5000/index
+that will allow you to draw characters and test the accuracy of the convolutional neural network
+
+![draw test image](images/draw.py.png "draw test")
