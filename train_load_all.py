@@ -30,7 +30,7 @@ model = create_model()
 
 # %% training basic model
 
-num_epochs = 2
+num_epochs = 4
 batch_size = 1
 
 print("training model...")
