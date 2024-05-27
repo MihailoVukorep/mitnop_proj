@@ -7,7 +7,7 @@ To set up the python virtual environment run the following command:
 bash setup-env.sh
 ```
 
-the script will install all the needed libraries
+the script will also install all the required libraries inside the virtual environment
 <br>
 use the virtual environment with:
 
@@ -24,7 +24,7 @@ after the command finishes you should have the gzip.zip file in the datasets fol
 <br>
 the script will also extract the zip file
 <br>
-if the script fails consider downloading the set manually:
+if the script fails consider downloading the dataset manually:
 - https://www.nist.gov/itl/products-and-services/emnist-dataset
 - https://biometrics.nist.gov/cs_links/EMNIST/Readme.txt
 - https://biometrics.nist.gov/cs_links/EMNIST/gzip.zip
