@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 
 from utils_main import *
-from utils_tf import *
+import os
+
+from utils_selectmodel import selectmodel
+
+model = selectmodel()
+
 from flask import Flask, request, jsonify, render_template, send_file, redirect
 from flask_cors import CORS
 import base64
@@ -9,11 +14,6 @@ from io import BytesIO
 from PIL import Image
 import numpy as np
 import pandas as pd
-
-model_path = d_models("model_all_bigbatch.keras")
-print(f"loading model: {model_path}")
-model = load_model(model_path)
-print("loaded model.")
 
 # make output dataframe
 df = pd.DataFrame(reversed_class_mapping.items(), columns=["key", "char"])
@@ -38,7 +38,7 @@ def root():
 
 @app.route('/index', methods=['GET'])
 def index():
-    return send_file('draw.html')
+    return send_file('drawtest.html')
 
 @app.route('/endpoint', methods=['POST'])
 def receive_image():

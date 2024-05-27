@@ -45,7 +45,7 @@ python train_load_all.py
 
 Test the trained network with
 ```
-python draw.py
+python drawtest.py
 ```
 this will run a flask server web page on 
 http://localhost:5000/index
