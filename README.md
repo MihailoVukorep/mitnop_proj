@@ -31,21 +31,21 @@ if the script fails consider downloading the dataset manually:
 
 ## Analyse the downloaded set
 ```
-python dataset_analysis.py
+./dataset_analysis.sh
 ```
 ![char count image](stats/dataset_unqiue_count_all.png "character count")
 
 ## Training the convolutional neural network
 
 ```
-python train_load_all.py
+./train.sh
 ```
 
 ## Testing the convolutional neural network
 
 Test the trained network with
 ```
-python drawtest.py
+./drawtest.sh
 ```
 this will run a flask server web page on 
 http://localhost:5000/index

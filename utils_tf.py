@@ -56,7 +56,7 @@ def create_model_v3():
 
 # set model here
 def create_model():
-    return create_model_v3()
+    return create_model_v2()
 
 def prepdata(images, labels):
     target_labels = np.array([class_mapping[i] for i in labels])
