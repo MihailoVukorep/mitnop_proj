@@ -1,5 +1,6 @@
 # %% load model
-from utils import *
+from utils_main import *
+from utils_tf import *
 from flask import Flask, request, jsonify, render_template, send_file, redirect
 from flask_cors import CORS
 import base64
@@ -10,7 +11,7 @@ import io
 
 # %% load model
 
-model_path = d_models("model_all.keras")
+model_path = d_models("model_all_bigbatch.keras")
 print(f"loading model: {model_path}")
 model = load_model(model_path)
 model.summary()
