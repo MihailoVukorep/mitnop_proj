@@ -1,4 +1,4 @@
-# Book Archiver - detecting hand written digits and letters from camera/photos
+# Book Archiver - detecting hand written digits and letters from images
 
 ## Setting up the python virtual environment
 To set up the python virtual environment run the following command:
