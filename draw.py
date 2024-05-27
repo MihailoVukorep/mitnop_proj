@@ -1,15 +1,24 @@
-# %% load model
+# %% libs
 from utils_main import *
 from utils_tf import *
+
+# flask server
 from flask import Flask, request, jsonify, render_template, send_file, redirect
 from flask_cors import CORS
-import base64
-import cv2
-import numpy as np
-from PIL import Image
-import io
 
-# %% load model
+# converting image
+import base64
+from io import BytesIO
+from PIL import Image
+import numpy as np
+
+def base64_to_numpy(base64_string):
+    image_data = base64.b64decode(base64_string)
+    image = Image.open(BytesIO(image_data))
+    image_array = np.array(image)
+    image_array = np.max(image_array, axis=2, keepdims=True)
+    image_array = np.expand_dims(image_array, axis=0)
+    return image_array
 
 model_path = d_models("model_all_bigbatch.keras")
 print(f"loading model: {model_path}")
@@ -17,8 +26,6 @@ model = load_model(model_path)
 model.summary()
 print("loaded model.")
 
-
-# %% setup flask server
 
 app = Flask(__name__)
 CORS(app)
@@ -36,30 +43,15 @@ def index():
 def receive_image():
     data_url = request.json.get('image')
 
-    img = Image.open(io.BytesIO(base64.b64decode(data_url.split(',')[1])))
-    img = img.resize((28, 28))
-    # Convert the image to grayscale
-    img = img.convert('L')
-    
-    # Normalize the pixel values to [0, 1]
-    img_array = np.array(img) / 255.0
-    
-    # Reshape the image to match the model input shape
-    img_array = img_array.reshape((1, 28, 28, 1))
-    
-    # Use your model to predict the digit
-    predictions = model.predict(img_array, verbose=0)
-    
-    # Get the predicted digit
-    predicted_digit = np.argmax(predictions, 1)
-    value = predicted_digit[0]
-    label = reversed_class_mapping[value]
+    #print(data_url)
+    base64 = data_url.split("data:image/png;base64,")[1]
+    image = base64_to_numpy(base64)
 
+    predictions = model.predict(image, verbose=0)
+    value = np.argmax(predictions, axis=1)
+    value_id = value[0]
+    label = reversed_class_mapping[value_id]
 
-
-    # TODO: fix this
-
-    print(label)
 
     # Send a response back to the client
     return jsonify({'prediction': label})

@@ -28,11 +28,14 @@
         <button onclick="clearCanvas()">Clear</button>
         <br>
         <p>Prediction: <span id="prediction"></span></p>
+        <canvas id="hiddenCanvas" width="28" height="28"></canvas>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+        const hiddenCanvas = document.getElementById('hiddenCanvas');
+        const hiddenCtx = hiddenCanvas.getContext('2d');
         let isDrawing = false;
         let lastX = 0;
         let lastY = 0;
@@ -41,7 +44,6 @@
             isDrawing = true;
             [lastX, lastY] = [e.offsetX, e.offsetY];
         });
-
 
         ctx.lineWidth = 10; // Adjust the value to make the brush thicker
 
@@ -53,7 +55,7 @@
             ctx.stroke();
             [lastX, lastY] = [e.offsetX, e.offsetY];
 
-            predictDigit()
+            predictDigit();
         });
 
         canvas.addEventListener('mouseup', () => {
@@ -71,12 +73,16 @@
 
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hiddenCtx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
             document.getElementById('prediction').textContent = "";
         }
 
         function predictDigit() {
-            // Convert canvas to base64 data URL
-            const imageData = canvas.toDataURL();
+            // Downscale the drawn content to 28x28
+            hiddenCtx.drawImage(canvas, 0, 0, hiddenCanvas.width, hiddenCanvas.height);
+
+            // Convert the hidden canvas to base64 data URL
+            const imageData = hiddenCanvas.toDataURL();
 
             // Send image data to the Flask server
             fetch('http://localhost:5000/endpoint', {
