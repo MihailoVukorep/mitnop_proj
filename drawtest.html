@@ -38,7 +38,7 @@
         p {
             margin: 0;
         }
-        #hiddenCanvas {
+        #canvas2 {
             margin-top: 10px;
         }
     </style>
@@ -47,12 +47,14 @@
     <div class="panel">
         <div class="panel-item">
             <div id="canvas-container">
+                <input type="range" id="zoomSlider" min="2" max="20" value="12" step="1">
+                <p id="zoomSliderValue"></p>
                 <canvas id="canvas" width="280" height="280"></canvas>
                 <div>
                     <button onclick="predictDigit()">Predict Digit</button>
                     <button onclick="clearCanvas()">Clear</button>
                 </div>
-                <canvas id="hiddenCanvas" width="28" height="28"></canvas>
+                <canvas id="canvas2" width="28" height="28"></canvas>
             </div>
         </div>
 
@@ -65,37 +67,23 @@
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const hiddenCanvas = document.getElementById('hiddenCanvas');
-        const hiddenCtx = hiddenCanvas.getContext('2d');
+        const canvas2 = document.getElementById('canvas2');
+        const ctx2 = canvas2.getContext('2d');
         let isDrawing = false;
-
-        canvas.addEventListener('mousedown', (e) => { isDrawing = true; });
-
-        ctx.lineWidth = 10; // brush size
-
-        canvas.addEventListener('mousemove', (e) => {
-            if (!isDrawing) { return; }
-            if (e.button == 2) { return; }
-            var x = event.clientX - canvas.offsetLeft;
-            var y = event.clientY - canvas.offsetTop;
-            ctx.beginPath();
-            ctx.arc(x, y, 10, 0, 2 * Math.PI);
-            ctx.fill();
-        });
-
-        canvas.addEventListener('mouseup', () => { isDrawing = false; predictDigit(); });
-        canvas.addEventListener('mouseleave', () => { isDrawing = false; });
-        canvas.addEventListener('contextmenu', function(event) { event.preventDefault(); clearCanvas(); });
+        var zoomSlider = document.getElementById('zoomSlider');
+        var zoomSliderValue = document.getElementById('zoomSliderValue');
+        function updateSlider() { zoomSliderValue.innerHTML = zoomSlider.value; }
+        zoomSlider.addEventListener('input', function() { updateSlider(); });
+        updateSlider();
 
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            hiddenCtx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
             document.getElementById('prediction').textContent = "";
         }
 
         function predictDigit() {
-            hiddenCtx.drawImage(canvas, 0, 0, hiddenCanvas.width, hiddenCanvas.height);
-            const imageData = hiddenCanvas.toDataURL();
+            const imageData = canvas2.toDataURL();
             fetch('http://localhost:5000/endpoint', {
                 method: 'POST',
                 headers: {
@@ -110,6 +98,22 @@
             })
             .catch(error => console.error('Error:', error));
         }
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) { return; }
+            if (e.button == 2) { return; }
+            var x = event.clientX - canvas.offsetLeft;
+            var y = event.clientY - canvas.offsetTop;
+            ctx.beginPath();
+            ctx.arc(x, y, zoomSlider.value, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height);
+        });
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; predictDigit(); });
+        canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+        canvas.addEventListener('contextmenu', function(event) { event.preventDefault(); clearCanvas(); });
     </script>
 </body>
 </html>
