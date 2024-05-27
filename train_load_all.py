@@ -6,12 +6,12 @@ from utils_load import *
 from utils_tf import *
 
 # %% load set
-print("loading datasets...")
+print("loading all datasets...")
 images, labels, mapping = dataset_load_all()
 mapping_n = len(mapping)
 
 # %% dataset info
-print("using datasets:")
+print("using:")
 print(f'images..: {images.shape}')
 print(f'labels..: {labels.shape}')
 print(f'mapping.: {mapping_n}')
