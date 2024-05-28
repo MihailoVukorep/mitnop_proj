@@ -23,6 +23,8 @@ if the script fails consider downloading the dataset manually:
 - https://biometrics.nist.gov/cs_links/EMNIST/Readme.txt
 - https://biometrics.nist.gov/cs_links/EMNIST/gzip.zip
 
+![example chars image 3](stats/grid3.png "grid3")
+
 ## Analyse the downloaded set
 ```
 ./dataset_analysis.sh
