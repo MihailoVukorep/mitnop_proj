@@ -51,7 +51,7 @@
                 <p id="zoomSliderValue"></p>
                 <canvas id="canvas" width="280" height="280"></canvas>
                 <div>
-                    <button onclick="predictDigit()">Predict Digit</button>
+                    <button onclick="predict()">Predict</button>
                     <button onclick="clearCanvas()">Clear</button>
                 </div>
                 <canvas id="canvas2" width="28" height="28"></canvas>
@@ -82,7 +82,7 @@
             document.getElementById('prediction').textContent = "";
         }
 
-        function predictDigit() {
+        function predict() {
             const imageData = canvas2.toDataURL();
             fetch('http://localhost:5000/endpoint', {
                 method: 'POST',
@@ -111,12 +111,12 @@
             ctx2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height);
 
             iter++;
-            if (iter % 10 == 0) { predictDigit(); }
+            if (iter % 10 == 0) { predict(); }
         });
 
 
         canvas.addEventListener('mousedown', (e) => { isDrawing = true; });
-        canvas.addEventListener('mouseup', () => { isDrawing = false; predictDigit(); });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; predict(); });
         canvas.addEventListener('mouseleave', () => { isDrawing = false; });
         canvas.addEventListener('contextmenu', function(event) { isDrawing = false; event.preventDefault(); clearCanvas(); });
     </script>
