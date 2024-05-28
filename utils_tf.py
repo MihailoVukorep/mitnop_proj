@@ -68,7 +68,7 @@ def create_model_v3():
 
 def create_model():
     # select model here
-    model, name = create_model_v2()
+    model, name = create_model_v3()
     #model.summary()
     return (model, name)
 
