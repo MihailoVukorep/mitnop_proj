@@ -5,7 +5,7 @@ from utils_main import *
 from utils_load import *
 from utils_tf import *
 
-images, labels, mapping = dataset_load_test()
+images, labels, mapping = dataset_load_all()
 test_input, test_target = prepdata(images, labels)
 del images
 gc.collect()

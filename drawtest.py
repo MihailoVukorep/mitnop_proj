@@ -17,7 +17,8 @@ import pandas as pd
 
 # make output dataframe
 df = pd.DataFrame(reversed_class_mapping.items(), columns=["key", "char"])
-df["prediction"] = "0%"
+clm = "prediction"
+df[clm] = "0"
 
 app = Flask(__name__)
 CORS(app)
@@ -44,8 +45,8 @@ def receive_image():
     value_id = value[0]
     label = reversed_class_mapping[value_id]
     values = predictions[0]
-    df["prediction"] = [f"{float(pred) * 100:.2f}%" for pred in values]
-    sorted_df = df.sort_values(by='prediction', ascending=False)
+    df[clm] = [pred * 100 for pred in values]
+    sorted_df = df.sort_values(by=clm, ascending=False)
     return jsonify({'prediction': str(sorted_df.to_string())})
 
 if __name__ == '__main__':
