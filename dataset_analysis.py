@@ -30,9 +30,11 @@ def counter_to_df(counter, filename):
     return df
 
 def counter_stat(load_func, set_type):
+    print(f"{set_type}:")
     images, labels, mapping = load_func()
     counter = labels_to_counter(labels)
     df = counter_to_df(counter, f"dataset_unqiue_count_{set_type}")
+    print(df.to_string())
     return counter, df
 
 # %% get counters
