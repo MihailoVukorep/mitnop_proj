@@ -21,6 +21,10 @@ mapping_n = len(mapping)
 # %% preprocess set for tf
 print("preparing images for tensorflow...")
 train_input, train_target = prepdata(images, labels)
+del images
+gc.collect()
+del labels
+gc.collect()
 print("images prepared.")
 
 # %% training

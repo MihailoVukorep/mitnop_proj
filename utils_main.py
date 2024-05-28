@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import gc
 
 class_mapping = {
     '0': 0,

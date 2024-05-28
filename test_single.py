@@ -4,28 +4,22 @@
 from utils_main import *
 from utils_load import *
 from utils_tf import *
+from utils_selectmodel import selectmodel
+import time
 
+# %% select model
+
+model = selectmodel()
 
 # %% load data for testing
 
 test_images, test_labels, test_mapping = dataset_loadset("digits", "test")
 test_input, test_target = prepdata(test_images, test_labels)
 
-
-# %% load model
-
-model_path = d_models("model_all.keras")
-
-print(f"loading model: {model_path}")
-model = load_model(model_path)
-model.summary()
-print("loaded model.")
-
 # %% eval model
 
 print("EVALUATE: ")
 results = model.evaluate(test_input, test_target, verbose=2)
-
 
 # %% testing model
 
@@ -73,5 +67,4 @@ plt.figure()
 plt.imshow(image[0])
 plt.show()
 
-
-# %%
+# %% 
