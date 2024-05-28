@@ -11,6 +11,20 @@ from tensorflow.keras.callbacks import LearningRateScheduler
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.model_selection import train_test_split
 
+def create_model_v0():
+    model = Sequential()
+    model.add(Input(shape=(28, 28, 1)))
+    model.add(Conv2D(32, (3, 3), activation='relu'))
+    model.add(MaxPooling2D((2, 2)))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(MaxPooling2D((2, 2)))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dense(class_mapping_n, activation='softmax'))
+    model.compile(loss="categorical_crossentropy", optimizer=Adam(), metrics=["categorical_accuracy"])
+    return (model, "v0")
+
 def create_model_v1():
     model = Sequential()
     model.add(Input(shape=(28, 28, 1)))
@@ -23,7 +37,7 @@ def create_model_v1():
     model.add(Dense(class_mapping_n, activation="softmax"))
     model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["categorical_accuracy"])
     model.summary()
-    return model
+    return (model, "v1")
 
 def create_model_v2():
     model = Sequential()
@@ -38,25 +52,28 @@ def create_model_v2():
     model.add(Dense(class_mapping_n, activation="softmax"))
     model.compile(loss="categorical_crossentropy", optimizer=Adam(), metrics=["categorical_accuracy"])
     model.summary()
-    return model
+    return (model, "v2")
 
 def create_model_v3():
     model = Sequential()
     model.add(Input(shape=(28, 28, 1)))
-    model.add(Conv2D(32, (3, 3), activation='relu'))
-    model.add(MaxPooling2D((2, 2)))
-    model.add(Conv2D(64, (3, 3), activation='relu'))
-    model.add(MaxPooling2D((2, 2)))
-    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(Conv2D(filters=32, kernel_size=(3,3), strides=(1,1), padding="same", activation="relu"))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Conv2D(filters=64, kernel_size=(3,3), strides=(1,1), padding="same", activation="relu"))
+    model.add(MaxPooling2D(pool_size=(2,2)))
     model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dense(class_mapping_n, activation='softmax'))
+    model.add(Dropout(0.5))
+    model.add(Dense(128, activation="sigmoid"))
+    model.add(Dense(class_mapping_n, activation="sigmoid"))
     model.compile(loss="categorical_crossentropy", optimizer=Adam(), metrics=["categorical_accuracy"])
-    return model
+    model.summary()
+    return (model, "v3")
 
-# set model here
 def create_model():
-    return create_model_v2()
+    # select model here
+    model, name = create_model_v2()
+    #model.summary()
+    return (model, name)
 
 def prepdata(images, labels):
     target_labels = np.array([class_mapping[i] for i in labels])

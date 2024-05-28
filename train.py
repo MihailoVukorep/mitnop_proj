@@ -25,25 +25,19 @@ print("images prepared.")
 
 # %% create model
 print("creating model:")
-model = create_model()
+model, name = create_model()
 
 # %% training basic model
-
 batch_size = 10000
 num_epochs = 4
 
-print("training model...")
-history = model.fit(
-    train_input,
-    train_target,
-    batch_size=batch_size,
-    epochs=num_epochs,
-    verbose=2
-)
+print("training model... ", end='')
+model_name = f"all_{name}_batch{batch_size}_epoch{num_epochs}.keras"
+print(model_name)
+history = model.fit(train_input, train_target, batch_size=batch_size, epochs=num_epochs, verbose=2)
 print("model trained.")
 
 # %% save model
-model_name = f"all_batch{batch_size}_epoch{num_epochs}.keras"
 print(f"saving model: {model_name}")
 model.save(d_models(model_name))
 print("model saved.")
