@@ -7,6 +7,7 @@ def selectmodel():
 
     models = {}
     for i, file in enumerate(os.listdir(models_dir)):
+        if not file.endswith(".keras"): continue
         models[i] = file
 
     if len(models) == 0:
