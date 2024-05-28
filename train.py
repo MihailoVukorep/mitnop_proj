@@ -7,7 +7,7 @@ from utils_tf import *
 
 # %% new model settings
 print("creating model: ", end='')
-batch_size = 1000
+batch_size = 10000
 num_epochs = 4
 model, name = create_model()
 model_name = f"all_{name}_batch{batch_size}_epoch{num_epochs}.keras"
