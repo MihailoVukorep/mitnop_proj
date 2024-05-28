@@ -36,7 +36,6 @@ def create_model_v1():
     model.add(Dropout(0.5))
     model.add(Dense(class_mapping_n, activation="softmax"))
     model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["categorical_accuracy"])
-    model.summary()
     return (model, "v1")
 
 def create_model_v2():
@@ -51,7 +50,6 @@ def create_model_v2():
     model.add(Dense(128, activation="relu"))
     model.add(Dense(class_mapping_n, activation="softmax"))
     model.compile(loss="categorical_crossentropy", optimizer=Adam(), metrics=["categorical_accuracy"])
-    model.summary()
     return (model, "v2")
 
 def create_model_v3():
@@ -66,7 +64,6 @@ def create_model_v3():
     model.add(Dense(128, activation="sigmoid"))
     model.add(Dense(class_mapping_n, activation="sigmoid"))
     model.compile(loss="categorical_crossentropy", optimizer=Adam(), metrics=["categorical_accuracy"])
-    model.summary()
     return (model, "v3")
 
 def create_model():
