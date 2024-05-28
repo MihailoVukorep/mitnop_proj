@@ -8,8 +8,8 @@ import pandas as pd
 
 # %% new model settings
 print("creating model: ", end='')
-batch_size = 1000
-num_epochs = 4
+batch_size = 10000
+num_epochs = 5
 model, name = create_model()
 file_name = f"all_{name}_batch{batch_size}_epoch{num_epochs}"
 model_name = f"{file_name}.keras"
