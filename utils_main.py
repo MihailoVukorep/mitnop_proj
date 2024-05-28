@@ -150,6 +150,6 @@ def d_models(model_name):
     makedir(models_dir)
     return os.path.join(models_dir, model_name)
 
-def d_stat(file_path):
+def d_stats(file_path):
     makedir(stats_dir)
     return os.path.join(stats_dir, file_path)

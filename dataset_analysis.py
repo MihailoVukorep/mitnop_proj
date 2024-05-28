@@ -23,8 +23,8 @@ def counter_to_df(counter, filename):
     df.sort_values(by='count', inplace=True, ascending=False)
     df.reset_index(drop=True, inplace=True)
     df.index.name = 'index'
-    df.to_csv(d_stat(filename + ".txt"))
-    with open(d_stat(filename + "_stat.txt"), 'w') as file:
+    df.to_csv(d_stats(filename + ".txt"))
+    with open(d_stats(filename + "_stat.txt"), 'w') as file:
         file.write("sum     " + str(df['count'].sum()) + "\n")
         file.write(str(df['count'].describe()) + "\n")
     return df
@@ -45,7 +45,7 @@ total_counter, total_df = counter_stat(dataset_load_all, "all")
 # %% plot counts
 
 def plot_dfs(total_df, train_df, test_df):
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 15))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
     ax1.set_title("unique character count (sorted by count descending)")
     ax1.bar(total_df['character'], total_df['count'], color="blue", label="total")
     ax1.bar(train_df['character'], train_df['count'], color="green", label="train")
@@ -59,8 +59,9 @@ def plot_dfs(total_df, train_df, test_df):
     ax2.bar(train_df2['character'], train_df2['count'], color="green", label="train")
     ax2.bar(test_df2['character'], test_df2['count'], color="red", label="test")
     ax2.legend()
-    plt.savefig(d_stat("dataset_unqiue_count_all.png"))
-    plt.show()
+    plt.tight_layout(pad=2)
+    plt.savefig(d_stats("dataset_unqiue_count_all.png"), bbox_inches='tight', pad_inches=0.1)
+    #plt.show()
 
 plot_dfs(total_df, train_df, test_df)
 

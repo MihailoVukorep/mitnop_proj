@@ -69,14 +69,15 @@ def dataset_img2(images, labels, index, index2):
     plt.tight_layout()
     plt.show()
 
-def dataset_grid(images, grid_size):
-    grid = images[:grid_size*grid_size]
+def dataset_grid(images, startindex, grid_size):
+    grid = images[startindex:startindex + grid_size*grid_size]
     fig, axes = plt.subplots(grid_size, grid_size, figsize=(8, 8))
     for i, ax in enumerate(axes.flat):
         #ax.imshow(grid[i].reshape((28, 28)), cmap='gray')
         ax.imshow(grid[i].reshape((28, 28)), cmap=plt.cm.gray_r)
         ax.axis('off')
-    plt.show()
+    plt.tight_layout(pad=0)
+    return fig
 
 
 def dataset_loadset(set_name, set_type):
