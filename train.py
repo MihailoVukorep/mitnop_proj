@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 # %% libs
+import pandas as pd
 from utils_main import *
 from utils_load import *
 from utils_tf import *
-import pandas as pd
 
 # %% new model settings
 print("creating model: ", end='')

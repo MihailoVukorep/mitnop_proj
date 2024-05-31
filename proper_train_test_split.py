@@ -2,8 +2,6 @@
 
 # %% libs
 
-# TODO: do proper train test split
-
 train_input, test_input, train_target, test_target = train_test_split(images_tf, labels_tf, test_size=0.2, random_state=42)
 del images_tf
 gc.collect()
