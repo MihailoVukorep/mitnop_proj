@@ -5,3 +5,6 @@ numpy
 matplotlib
 scikit-learn
 flask
+flask_cors
+ipykernel
+

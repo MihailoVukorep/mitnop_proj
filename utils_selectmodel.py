@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 
 from utils_main import *
+
+def tf_load_model(model):
+    from tensorflow.keras.models import load_model
+    return load_model(d_models(model))
+
 import os
 
-def selectmodel():
+def selectmodel(findname=""):
     i = 0
     models = {}
     for file in os.listdir(models_dir):
@@ -11,7 +16,11 @@ def selectmodel():
             continue
         i += 1
         models[i] = file
-    print(models)
+
+    if findname:
+        for k, f in models.items():
+            if findname in f:
+                return tf_load_model(f)
 
     if len(models) == 0:
         print("no models found")
@@ -34,5 +43,4 @@ def selectmodel():
 
     print(f"selected model: {model_str}")
 
-    from tensorflow.keras.models import load_model
-    return load_model(d_models(model_str))
+    return tf_load_model(model_str)
