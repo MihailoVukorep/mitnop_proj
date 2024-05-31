@@ -37,14 +37,21 @@ if the script fails consider downloading the dataset manually:
 ./train.sh
 ```
 
-## Testing the convolutional neural network
+## Testing the convolutional neural network - drawing input
 
 Test the trained network with
 ```
-./drawtest.sh
+./test_draw.sh
 ```
 this will run a flask server web page on 
 http://localhost:5000/index
 that will allow you to draw characters and test the accuracy of the convolutional neural network
 
-![draw test image](images/drawtest.png "draw test")
+![draw test image](images/test_draw.png "draw test")
+
+## Testing the convolutional neural network - camera input
+
+```
+./test_camera.sh
+```
+![camera test image](images/test_camera.png "camera test")

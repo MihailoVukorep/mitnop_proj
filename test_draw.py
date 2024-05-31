@@ -29,7 +29,7 @@ def root():
 
 @app.route('/index', methods=['GET'])
 def index():
-    return send_file('drawtest.html')
+    return send_file('test_draw.html')
 
 @app.route('/endpoint', methods=['POST'])
 def receive_image():
