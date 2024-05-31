@@ -8,7 +8,8 @@ import numpy as np
 
 from utils_main import *
 from utils_selectmodel import selectmodel
-model = selectmodel("all_v3_batch10000_epoch5.keras")
+#model = selectmodel("all_v3_batch10000_epoch5.keras")
+model = selectmodel()
 
 # video capture device
 vc = cv2.VideoCapture(0)
