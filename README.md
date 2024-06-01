@@ -44,7 +44,7 @@ and test on the remaining 20%
 ```sh
 ./proper_train_test_split.sh
 ./train_80p.sh
-./test_20p.sh # use this to test
+./test_20p.sh
 ```
 
 ## Testing the convolutional neural network - drawing input
