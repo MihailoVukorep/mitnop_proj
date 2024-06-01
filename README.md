@@ -43,8 +43,8 @@ run the following commands if you want to train the network on 80% of the set
 and test on the remaining 20%
 ```sh
 ./proper_train_test_split.sh
-./train_80.sh
-./test_20.sh # use this to test
+./train_80p.sh
+./test_20p.sh # use this to test
 ```
 
 ## Testing the convolutional neural network - drawing input
