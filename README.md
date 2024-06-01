@@ -32,9 +32,16 @@ if the script fails consider downloading the dataset manually:
 ![char count image](stats/dataset_unqiue_count_all.png "character count")
 
 ## Training the convolutional neural network
-
+run the following command if you want to train the network on the entire EMNIST set (train+test)
 ```
 ./train.sh
+```
+
+run the following commands if you want to train the network on 80% of the set (20% will be used for testing)
+```sh
+./proper_train_test_split.sh
+./train_80.sh
+./test_20.sh # use this to test
 ```
 
 ## Testing the convolutional neural network - drawing input
@@ -55,3 +62,4 @@ that will allow you to draw characters and test the accuracy of the convolutiona
 ./test_camera.sh
 ```
 ![camera test image](images/test_camera.png "camera test")
+
