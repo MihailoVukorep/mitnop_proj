@@ -37,7 +37,8 @@ run the following command if you want to train the network on the entire EMNIST 
 ./train.sh
 ```
 
-run the following commands if you want to train the network on 80% of the set (20% will be used for testing)
+run the following commands if you want to train the network on 80% of the set
+and test on the remaining 20%
 ```sh
 ./proper_train_test_split.sh
 ./train_80.sh
