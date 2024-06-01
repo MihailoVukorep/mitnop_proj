@@ -11,6 +11,11 @@ from utils_selectmodel import selectmodel
 #model = selectmodel("all_v3_batch10000_epoch5.keras")
 model = selectmodel()
 
+# make output dataframe
+df = pd.DataFrame(reversed_class_mapping.items(), columns=["key", "char"])
+clm = "prediction"
+df[clm] = "0"
+
 # video capture device
 vc = cv2.VideoCapture(0)
 if not vc.isOpened():
@@ -19,11 +24,6 @@ if not vc.isOpened():
 
 # windows
 cv2.namedWindow("preview")
-
-# make output dataframe
-df = pd.DataFrame(reversed_class_mapping.items(), columns=["key", "char"])
-clm = "prediction"
-df[clm] = "0"
 
 def image_filter(frame):
     img1 = cv2.resize(frame, (28, 28))
@@ -34,7 +34,6 @@ def image_filter(frame):
     img3 = cv2.bitwise_and(img2, img2, mask=mask)
     img4 = np.expand_dims(img3, axis=-1)
     return img4
-
 
 def detect(filtered_image):
     image_array = np.expand_dims(filtered_image, axis=0)
