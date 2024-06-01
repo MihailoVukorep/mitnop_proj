@@ -2,7 +2,6 @@
 
 # %% select model
 
-import pandas as pd
 import cv2
 import numpy as np
 
@@ -13,18 +12,13 @@ from utils_selectmodel import selectmodel
 model = selectmodel("all_v3_batch10000_epoch5.keras")
 #model = selectmodel()
 
-# make output dataframe
-df = pd.DataFrame(reversed_class_mapping.items(), columns=["key", "char"])
-clm = "prediction"
-df[clm] = "0"
-
 def text_detection(image, padding=3):
     imgcopy = image.copy()
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     #cv2.imshow("gray", gray)
     blurred = cv2.GaussianBlur(gray, (7, 7), 0)
     #cv2.imshow("blurred", blurred)
-    edges = cv2.Canny(blurred, threshold1=60, threshold2=200, apertureSize=5, L2gradient=True)
+    edges = cv2.Canny(blurred, threshold1=60, threshold2=255, apertureSize=5, L2gradient=True)
     contours, _ = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     text_regions = []
     for contour in contours:
