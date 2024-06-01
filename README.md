@@ -64,3 +64,7 @@ that will allow you to draw characters and test the accuracy of the convolutiona
 ```
 ![camera test image](images/test_camera.png "camera test")
 
+newer version (needs some work)
+```
+./test_camera2.sh
+```
