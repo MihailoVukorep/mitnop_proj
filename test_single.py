@@ -9,7 +9,7 @@ import time
 
 # %% select model
 
-model = selectmodel()
+model = selectmodel("all_v3_batch10000_epoch5.keras")
 
 # %% load data for testing
 
@@ -50,7 +50,7 @@ for i, (a, b) in enumerate(zip(a_lst, test_labels)):
     if str(a) != str(b):
         print(f'{i} predict: {a} -- actual: {b}')
         dataset_img(test_images, test_labels, i, note=f"predict: {a}")
-        time.sleep(5)
+        time.sleep(2)
 
 # %% single image by index
 
