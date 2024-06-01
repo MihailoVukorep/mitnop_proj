@@ -87,14 +87,7 @@ def dataset_loadset(set_name, set_type):
     path_mapping = os.path.join(dataset_dir, f"emnist-{set_name}-mapping.txt")
     return read_emnist(path_images, path_labels, path_mapping)
 
-def dataset_load_all():
-    return dataset_load(["train", "test"])
 
-def dataset_load_train():
-    return dataset_load(["train"])
-
-def dataset_load_test():
-    return dataset_load(["test"])
 
 def images_to_md5s(images):
     hashes = []
@@ -148,10 +141,12 @@ def dupes_rm(images, labels):
     return images, labels
     
 
+# dataset load unique images
 def dataset_load(types: list):
-
     # check cache first
     s = '-'.join(types)
+    if s == "train-test":
+        s = "all"
     cache_images_path = d_datasets(f"cache_{s}_images.npy")
     cache_labels_path = d_datasets(f"cache_{s}_labels.npy")
     cache_mapping_path = d_datasets(f"cache_{s}_mapping.npy")
@@ -160,10 +155,9 @@ def dataset_load(types: list):
         labels = np.load(cache_labels_path)
         mapping_arr = np.load(cache_mapping_path)
         mapping = set(mapping_arr)
-        print(f'loaded from cache images.: {images.shape}')
-        print(f'loaded from cache labels.: {labels.shape}')
-        print(f'loaded from cache class..: {len(mapping)}')
-        print(f'loaded from cache bytes..: {bytes_human_readable(images.nbytes)}')
+        print(f'loaded from cache -- {cache_images_path} -- images.: {images.shape} -- {bytes_human_readable(images.nbytes)}')
+        print(f'loaded from cache -- {cache_images_path} -- labels.: {labels.shape}')
+        print(f'loaded from cache -- {cache_images_path} -- class..: {len(mapping)}')
         return images, labels, mapping
 
     names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
@@ -173,10 +167,9 @@ def dataset_load(types: list):
     for set_type in types:
         for set_name in names:
             images, labels, mapping = dataset_loadset(set_name, set_type)
-            print(f'{set_type} {set_name} images.: {images.shape}')
+            print(f'{set_type} {set_name} images.: {images.shape} -- {bytes_human_readable(images.nbytes)}')
             print(f'{set_type} {set_name} labels.: {labels.shape}')
             print(f'{set_type} {set_name} class..: {len(mapping)}')
-            print(f'{set_type} {set_name} bytes..: {bytes_human_readable(images.nbytes)}')
             total_images.append(images)
             total_labels.append(labels)
             total_mappings.update(mapping)
@@ -195,10 +188,9 @@ def dataset_load(types: list):
         else:
             total_labels_nparr = np.concatenate([total_labels_nparr, arr], axis=0)
     
-    print(f'total images.: {total_images_nparr.shape}')
+    print(f'total images.: {total_images_nparr.shape} -- {bytes_human_readable(total_labels_nparr.nbytes)}')
     print(f'total labels.: {total_labels_nparr.shape}')
     print(f'total class..: {len(total_mappings)}')
-    print(f'total bytes..: {bytes_human_readable(total_images_nparr.nbytes)}')
     
     # remove dupes
     print("removing duplicates...")
@@ -215,6 +207,33 @@ def dataset_load(types: list):
     print("cache created")
 
     return total_images_nparr, total_labels_nparr, total_mappings
+
+def dataset_load_all():
+    return dataset_load(["train", "test"])
+
+def dataset_load_train():
+    return dataset_load(["train"])
+
+def dataset_load_test():
+    return dataset_load(["test"])
+
+def save_XXp(images, labels, XX="80"):
+    images_path = f'cache_unique_{XX}_images.npy'
+    labels_path = f'cache_unique_{XX}_labels.npy'
+    print(f"saving: {images_path} -- {images.shape} -- {bytes_human_readable(images.nbytes)}")
+    print(f"saving: {labels_path} -- {labels.shape}")
+    np.save(d_datasets(images_path), images)
+    np.save(d_datasets(labels_path), labels)
+
+def load_XXp(XX="80"):
+    cache_images_path = d_datasets(f"cache_unique_{XX}p_images.npy")
+    cache_labels_path = d_datasets(f"cache_unique_{XX}p_labels.npy")
+    if os.path.exists(cache_images_path) and os.path.exists(cache_labels_path):
+        images = np.load(cache_images_path)
+        labels = np.load(cache_labels_path)
+        print(f'loaded from cache -- {cache_images_path} -- images.: {images.shape} -- {bytes_human_readable(images.nbytes)}')
+        print(f'loaded from cache -- {cache_labels_path} -- labels.: {labels.shape}')
+        return images, labels
 
 def dataset_info():
     names = ["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]

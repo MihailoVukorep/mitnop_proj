@@ -11,14 +11,13 @@ print("creating model: ", end='')
 batch_size = 10000
 num_epochs = 5
 model, name = create_model()
-file_name = f"all_{name}_batch{batch_size}_epoch{num_epochs}"
+file_name = f"80p_{name}_batch{batch_size}_epoch{num_epochs}"
 model_name = f"{file_name}.keras"
 print(model_name)
 
 # %% load set
 print("loading...")
-images, labels, mapping = dataset_load_all()
-mapping_n = len(mapping)
+images, labels = load_XXp("80")
 
 # %% preprocess set for tf
 print("preparing images for tensorflow...")
