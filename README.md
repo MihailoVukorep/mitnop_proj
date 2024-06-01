@@ -27,9 +27,9 @@ if the script fails consider downloading the dataset manually:
 
 ## Analyse the downloaded set
 ```sh
-./dataset_analysis.sh       # graph char counts
+./dataset_analysis.sh       # graph char counts - output: stats dir
 ./dataset_checkdupes.sh     # check for duplicates
-./dataset_grid.sh           # check for duplicates
+./dataset_grid.sh           # make grid of some images - output: stats dir
 ```
 ![char count image](stats/dataset_unqiue_count_all.png "character count")
 
