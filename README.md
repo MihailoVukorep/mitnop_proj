@@ -59,12 +59,14 @@ that will allow you to draw characters and test the accuracy of the convolutiona
 
 ## Testing the convolutional neural network - camera input
 
+single character detection
 ```
 ./test_camera.sh
 ```
 ![camera test image](images/test_camera.png "camera test")
 
-newer version (needs some work)
+multiple character detection, newer version (needs some work)
 ```
 ./test_camera2.sh
 ```
+![camera2 test image](images/test_camera2.png "camera2 test")

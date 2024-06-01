@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# %% select model
+# %% libs
 
 import cv2
 import numpy as np
@@ -9,8 +9,8 @@ import numpy as np
 
 from utils_main import *
 from utils_selectmodel import selectmodel
-model = selectmodel("all_v3_batch10000_epoch5.keras")
-#model = selectmodel()
+#model = selectmodel("all_v3_batch10000_epoch5.keras")
+model = selectmodel()
 
 def text_detection(image, padding=3):
     imgcopy = image.copy()
