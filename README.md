@@ -26,8 +26,10 @@ if the script fails consider downloading the dataset manually:
 ![example chars image 3](stats/grid3.png "grid3")
 
 ## Analyse the downloaded set
-```
-./dataset_analysis.sh
+```sh
+./dataset_analysis.sh       # graph char counts
+./dataset_checkdupes.sh     # check for duplicates
+./dataset_grid.sh           # check for duplicates
 ```
 ![char count image](stats/dataset_unqiue_count_all.png "character count")
 
