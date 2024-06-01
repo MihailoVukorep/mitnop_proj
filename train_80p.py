@@ -8,8 +8,8 @@ from utils_tf import *
 
 # %% new model settings
 print("creating model: ", end='')
-batch_size = 10000
-num_epochs = 5
+batch_size = 100
+num_epochs = 1
 model, name = create_model()
 file_name = f"80p_{name}_batch{batch_size}_epoch{num_epochs}"
 model_name = f"{file_name}.keras"
