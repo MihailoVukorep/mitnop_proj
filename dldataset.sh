@@ -19,6 +19,6 @@ curl "https://biometrics.nist.gov/cs_links/EMNIST/gzip.zip" --output gzip.zip
 
 # Unzip the downloaded file
 echo "Unzipping the dataset..."
-unzip gzip.zip
+unzip -o gzip.zip
 
 echo "Download and extraction complete."
