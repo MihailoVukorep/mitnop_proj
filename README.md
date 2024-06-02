@@ -1,4 +1,5 @@
 # Book Archiver - detecting hand written digits and letters from images
+tested on: Arch Linux x86_64
 
 ## Setting up the python virtual environment
 To set up the python virtual environment run the following command:
