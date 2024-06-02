@@ -9,7 +9,7 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import LearningRateScheduler
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from sklearn.model_selection import train_test_split
+#from sklearn.model_selection import train_test_split
 
 def create_model_v0():
     model = Sequential()
