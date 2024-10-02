@@ -1,3 +1,5 @@
+project development moved to: [cnn-emnist-cam](https://github.com/0000xFFFF/cnn-emnist-cam)
+
 # Book Archiver - detecting hand written digits and letters from images
 
 tested on: Arch Linux
